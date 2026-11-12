@@ -70,7 +70,7 @@ export default function HomePage({ initialSection = null }){
 
   <div className="vpsoc-shell">
     <div className="vpsoc-content">
-      <span className="vpsoc-eyebrow">Your Virtual Security Operations Team</span>
+      <span className="vpsoc-eyebrow">Integrated Cyber Security Operations</span>
 
       <h1 id="vpsoc-heading">
         <span>We Pilot Your</span>
@@ -92,23 +92,10 @@ export default function HomePage({ initialSection = null }){
         </Link>
       </div>
 
-      <div className="vpsoc-positioning">
-        <i aria-hidden="true" />
-        <span>People-led. Platform-enabled. Accountable by design.</span>
-      </div>
-
       <ul className="vpsoc-lifecycle" aria-label="V Pilot operational lifecycle">
-        <li>Anticipate</li><li>Observe</li><li>Respond</li><li>Restore</li><li>Prove</li>
+         <li>Your security. Our operational responsibility.</li>
       </ul>
     </div>
-
-    <aside className="vpsoc-responsibility" aria-label="Operational responsibility commitment">
-      <i aria-hidden="true" />
-      <div>
-        <strong>Your security. Our operational responsibility.</strong>
-        <span>Within the agreed service scope.</span>
-      </div>
-    </aside>
   </div>
 </section>
 
