@@ -36,10 +36,7 @@ export default function App() {
     <>
       <Header />
       <main id="main-content">
-        <SolutionsRouteNavigator />
-        <RouteSectionNavigator />
-        <FrameworksRouteNavigator />
-        <ResourcesRouteNavigator />
+       <DynamicScrollNavigator />
 
         <Routes>
           <Route path="/" element={<HomePage />} />
