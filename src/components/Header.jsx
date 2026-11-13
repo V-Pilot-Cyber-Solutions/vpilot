@@ -27,7 +27,7 @@ const menuConfigs = {
             { title: "5Pilot Operations", links: [["5Pilot Overview", "/company"], ["Compass Pilot", "/company"], ["Custodian Pilot", "/company"], ["Vigil Pilot", "/company"], ["ART Pilot", "/company"]] }
         ],
         featured: {
-            visual: <img src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
+            visual: <img className="vpmm-shield-orbit" src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
             eyebrow: "SECURITY ASSURANCE",
             title: "Built for Accountable Security Operations",
             description: "Governed responsibility, validated execution, trusted recovery, and evidence by design.",
@@ -43,11 +43,18 @@ const menuConfigs = {
         mainLinkLabel: "Explore Platform",
         groups: [
             { title: "Platform Modules", links: [["NativeTrust Workspace", "/platform/nativetrust-workspace"], ["Autonomous Remediation", "/platform/autonomous-remediation"], ["Integrated SecOps", "/platform/integrated-security-operations"], ["Autonomous Resilience", "/platform/autonomous-resilience"]] },
-            { title: "Platform Modules", links: [["Application Security", "/platform/application-security-governance"], ["GRC & Compliance", "/platform/grc-compliance"]] },
+            { title: "AppSec & Governance", links: [["Application Security", "/platform/application-security-governance"], ["GRC & Compliance", "/platform/grc-compliance"]] },
             { title: "Shared Operations", links: [["Asset Graph", "/platform/asset-graph"], ["Service Operations Hub", "/platform/service-operations-hub"], ["Risk & Control Register", "/platform/risk-control-register"], ["Evidence Vault", "/platform/evidence-vault"]] }
         ],
         featured: {
-            visual: <img src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />,
+            visual: (
+                <div className="vpmm-pudica-orbit" aria-hidden="true">
+                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
+                    <span className="vpmm-pudica-orbit-core">
+                        <img src="/assets/pudica-emblem-final.png" alt="" />
+                    </span>
+                </div>
+            ),
             eyebrow: "PUDICA PLATFORM",
             title: "One Platform. One Trusted Operating Record.",
             description: "Govern risk, workflows, approvals, response, recovery, compliance, and evidence.",
@@ -67,7 +74,14 @@ const menuConfigs = {
             { title: "Respond & Recover", links: [["Autonomous Incident Response", "/solutions/autonomous-incident-response"], ["Cyber Resilience", "/solutions/cyber-resilience-recovery"]] }
         ],
         featured: {
-            visual: <img src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />,
+            visual: (
+                <div className="vpmm-pudica-orbit" aria-hidden="true">
+                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
+                    <span className="vpmm-pudica-orbit-core">
+                        <img src="/assets/pudica-emblem-final.png" alt="" />
+                    </span>
+                </div>
+            ),
             eyebrow: "PUDICA SOLUTIONS",
             title: "One Platform. Connected Security Outcomes.",
             description: "Six integrated solution families share one asset model, workflow, risk register, and assurance record.",
@@ -87,7 +101,7 @@ const menuConfigs = {
             { title: "Exposure & Remediation", links: [["Vulnerability Remediation", "/services/managed-vulnerability-remediation"], ["ARC Remediation", "/services/arc-remediation"]] }
         ],
         featured: {
-            visual: <img src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
+            visual: <img className="vpmm-shield-orbit" src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
             eyebrow: "5PILOT OPERATIONS",
             title: "Specialist Teams. One Integrated Operation.",
             description: "Compass governs. Custodian administers. Vigil observes. ART validates. Phoenix responds.",
@@ -107,7 +121,13 @@ const menuConfigs = {
             { title: "Governance", links: [["Shared Responsibility", "/frameworks/shared-responsibility"], ["Evidence by Design", "/frameworks/evidence-by-design"]] }
         ],
         featured: {
-            visual: <img src="/assets/vpilot-approved-framework-compass.svg" alt="" />,
+            visual: (
+                <div className="vpmm-compass-orbit" aria-hidden="true">
+                    <img src="/assets/vpilot-approved-framework-compass.svg" alt="" />
+                    <span className="vpmm-compass-protect">PROTECT</span>
+                    <span className="vpmm-compass-operate">OPERATE</span>
+                </div>
+            ),
             eyebrow: "PRODSECOPS FRAMEWORK",
             title: "Protect What Runs the Business",
             description: "Connect business context, trusted state, threat intelligence, proving, authority, and recovery.",
@@ -127,7 +147,14 @@ const menuConfigs = {
             { title: "Documentation", links: [["PUDICA Documentation", "/docs/pudica"], ["Service Documentation", "/docs/services"]] }
         ],
         featured: {
-            visual: <img src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />,
+            visual: (
+                <div className="vpmm-pudica-orbit" aria-hidden="true">
+                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
+                    <span className="vpmm-pudica-orbit-core">
+                        <img src="/assets/pudica-emblem-final.png" alt="" />
+                    </span>
+                </div>
+            ),
             eyebrow: "FEATURED RESOURCE",
             title: "PUDICA Platform Overview",
             description: "One platform. Connected operations. Discover the integrated operational control plane.",
