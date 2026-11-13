@@ -1,1 +1,83 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://vpilot.org/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Business Pages -->
+  <url>
+    <loc>https://vpilot.org/</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/platform</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/solutions</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/frameworks</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/resources</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- Engagement & Information -->
+  <url>
+    <loc>https://vpilot.org/insights</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/contact</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/careers</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/support</loc>
+    <priority>0.5</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
+  <!-- Legal & Trust Center -->
+  <url>
+    <loc>https://vpilot.org/privacy</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/terms</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/cookies</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/security-disclosure</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://vpilot.org/accessibility</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+</urlset>

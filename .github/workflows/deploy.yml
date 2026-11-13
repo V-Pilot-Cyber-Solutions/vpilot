@@ -42,6 +42,7 @@ jobs:
         shell: bash
         run: |
           test -f dist/index.html
+          cp dist/index.html dist/404.html
           test -f dist/CNAME
           test "$(cat dist/CNAME)" = "vpilot.org"
 
