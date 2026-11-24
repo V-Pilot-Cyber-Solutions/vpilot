@@ -1,263 +1,88 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useEffect, useId, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { ApprovedVPilotBrand } from "../VPilotBrand.jsx";
-import UniversalMegaMenu from "./UniversalMegaMenu.jsx";
-import "./vpilot-enterprise-header.css";
+import "./vpilot-enterprise-nav.css";
 
-const navItems = [
-    { key: "company", label: "Company", menu: true },
-    { key: "platform", label: "Platform", menu: true },
-    { key: "solutions", label: "Solutions", menu: true },
-    { key: "services", label: "Services", menu: true },
-    { key: "frameworks", label: "Frameworks", menu: true },
-    { key: "resources", label: "Resources", menu: true },
+const signin = "https://pudica.io/MicrosoftIdentity/Account/SignIn";
+const briefing = "/contact?intent=executive-briefing";
+const inquiry = (intent) => `/contact?intent=${intent}`;
+const menus = [
+  { label: "Company", title: "Your cyber operating partner", intro: "V Pilot runs agreed cybersecurity operations. Your leadership retains material approvals and formal risk acceptance.", href: "/about-v-pilot", cta: "About V Pilot", groups: [
+    ["Who we are", [["About V Pilot", "/about-v-pilot"], ["Why V Pilot", "/why-v-pilot"], ["Careers", "/careers"]]],
+    ["How we work", [["Operating model & decision rights", "/#how-we-operate"], ["Security assurance", "/security-assurance"], ["Engagement options", "/#engagement-options"]]],
+  ], feature: ["ACCOUNTABILITY", "Know who owns the work", "See how ownership, escalation and verification support executive oversight.", "/#how-we-operate", "See how we operate"] },
+  { label: "PUDICA Autonomy", title: "Validate before you act", intro: "V Pilot’s flagship SaaS platform connects technical evidence, isolated validation, approval and production verification.", href: "/platform", cta: "View platform overview", groups: [
+    ["Capabilities", [["Autonomous Remediations", "/platform/autonomous-remediation"], ["Integrated Security Operations", "/platform/integrated-security-operations"], ["Autonomous Resilience", "/platform/autonomous-resilience"], ["GRC & Operational Evidence", "/platform/grc-compliance"]]],
+    ["Validation & access", [["GoldenVault & SecLabs", "/platform/seclabs"], ["Illustrative decision record", "/#decision-evidence"], ["PUDICA sign-in (pudica.io)", signin]]],
+  ], feature: ["PLATFORM CONTROLS", "Evidence supports approval", "GoldenVault preserves versioned state. SecLabs tests eligible actions before the authorised owner decides what runs.", "/platform/seclabs", "Explore validation"] },
+  { label: "Solutions", title: "Solve a business security priority", intro: "Combine the right capabilities for a cloud programme, distributed workforce or critical service that needs to recover.", href: "/solutions", cta: "View all solutions", groups: [
+    ["Transform & operate", [["Secure Business Transformation", "/solutions/secure-business-transformation"], ["NativeTrust Managed Workspace", "/solutions/nativetrust-workspace"], ["Integrated Security Operations", "/solutions/integrated-security-operations"]]],
+    ["Govern & recover", [["Enterprise Risk Management", "/solutions/enterprise-risk-management"], ["Incident Response & Forensics", "/solutions/incident-response-forensics"], ["Cyber Resilience & Recovery", "/solutions/cyber-resilience-recovery"], ["Privacy & Data Protection", "/solutions/privacy-data-protection"]]],
+  ], feature: ["WORKFORCE OPERATIONS", "Secure the whole workspace", "NativeTrust brings remote IT support, identity, endpoints and essential infrastructure into one operating scope.", "/solutions/nativetrust-workspace", "Explore NativeTrust"] },
+  { label: "Services", title: "Choose what V Pilot will run", intro: "Commission specialist work or delegate ongoing operations with clear scope, authority and evidence.", href: "/services", cta: "View service catalogue", groups: [
+    ["Operate & remediate", [["IT & Infrastructure Security", inquiry("infrastructure-operations")], ["Cloud Migrations", inquiry("cloud-migrations")], ["Configuration & Compliance", inquiry("configuration-compliance")], ["Vulnerability Remediation", "/services/managed-vulnerability-remediation"], ["Application Security Governance", inquiry("application-security-governance")]]],
+    ["Detect, respond & recover", [["SIEM & Detection Operations", "/services/managed-siem"], ["Incident Readiness & Response", "/services/incident-readiness-response"], ["Digital Forensics Investigations", inquiry("digital-forensics-investigations")], ["Backup, Recovery & Continuity", "/services/managed-backup-recovery"]]],
+    ["Executive governance", [["CISO as a Service", "/services/ciso-as-a-service"], ["Certification Readiness", "/services/iso-27001-certification-readiness"], ["DPO & Privacy Operations", inquiry("privacy-operations")], ["Enterprise Risk & Vendor Assurance", inquiry("enterprise-vendor-assurance")]]],
+  ], feature: ["ENGAGEMENT MODELS", "Define the scope and authority", "Compare specialist, co-managed and fully managed delivery. Agree who operates each control and who approves material changes.", "/#engagement-options", "Compare engagement options"] },
+  { label: "Frameworks", title: "How we govern the work", intro: "Apply a consistent method for infrastructure and application security without losing sight of production dependencies or decision rights.", href: "/frameworks", cta: "View all frameworks", groups: [
+    ["Operating frameworks", [["ProdSecOps: infrastructure security", "/frameworks/prodsecops"], ["ProdSecApps: application governance", "/frameworks/prodsecapps"]]],
+    ["Assurance practices", [["Shared responsibility", "/frameworks/shared-responsibility"], ["Evidence by design", "/frameworks/evidence-by-design"], ["5D Threat Intelligence", "/frameworks/5d-threat-intelligence"]]],
+  ], feature: ["PRODSECOPS", "Protect what runs the business", "Plan security changes around service dependencies, approved change windows, detection and recovery.", "/frameworks/prodsecops", "Explore ProdSecOps"] },
+  { label: "Resources", title: "Resources for security leaders", intro: "Review capabilities, operating guidance and technical references before defining scope or preparing a decision.", href: "/resources", cta: "Browse resources", groups: [
+    ["For decision-makers", [["Insights", "/resources/insights"], ["Solution briefs", "/resources/solution-briefs"]]],
+    ["For delivery teams", [["Technical guides", "/resources/technical-guides"], ["Security advisories", "/resources/security-advisories"], ["PUDICA documentation", "/docs/pudica"], ["Service documentation", "/docs/services"]]],
+  ], feature: ["WORKED EXAMPLE", "Review a change decision", "See an illustrative record of validation, approval and production closure criteria.", "/#decision-evidence", "View the example"] },
 ];
 
-const menuConfigs = {
-    company: {
-        eyebrow: "Company",
-        title: "One Accountable Cybersecurity Operating Model",
-        description: "V Pilot connects security leadership, specialist operations, validation, execution, and evidence through shared responsibility.",
-        mainLink: "/company",
-        mainLinkLabel: "Explore V Pilot",
-        groups: [
-            { title: "Company Overview", links: [["About V Pilot", "/company"], ["Purpose, Vision & Mission", "/company"], ["Our Story", "/company"], ["Leadership", "/company"]] },
-            { title: "Why V Pilot", links: [["Our Difference", "/company"], ["Security Assurance", "/company"], ["Operating Principles", "/company"], ["Shared Responsibility", "/company"]] },
-            { title: "5Pilot Operations", links: [["5Pilot Overview", "/company"], ["Compass Pilot", "/company"], ["Custodian Pilot", "/company"], ["Vigil Pilot", "/company"], ["ART Pilot", "/company"]] }
-        ],
-        featured: {
-            visual: <img className="vpmm-shield-orbit" src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
-            eyebrow: "SECURITY ASSURANCE",
-            title: "Built for Accountable Security Operations",
-            description: "Governed responsibility, validated execution, trusted recovery, and evidence by design.",
-            link: "/company",
-            linkLabel: "Explore Security Assurance"
-        }
-    },
-    platform: {
-        eyebrow: "PUDICA PLATFORM",
-        title: "One Operational System. Connected Security Outcomes.",
-        description: "PUDICA unifies context, workflow, authority, automation, monitoring, recovery, compliance, and evidence.",
-        mainLink: "/platform",
-        mainLinkLabel: "Explore Platform",
-        groups: [
-            { title: "Platform Modules", links: [["NativeTrust Workspace", "/platform/nativetrust-workspace"], ["Autonomous Remediation", "/platform/autonomous-remediation"], ["Integrated SecOps", "/platform/integrated-security-operations"], ["Autonomous Resilience", "/platform/autonomous-resilience"]] },
-            { title: "AppSec & Governance", links: [["Application Security", "/platform/application-security-governance"], ["GRC & Compliance", "/platform/grc-compliance"]] },
-            { title: "Shared Operations", links: [["Asset Graph", "/platform/asset-graph"], ["Service Operations Hub", "/platform/service-operations-hub"], ["Risk & Control Register", "/platform/risk-control-register"], ["Evidence Vault", "/platform/evidence-vault"]] }
-        ],
-        featured: {
-            visual: (
-                <div className="vpmm-pudica-orbit" aria-hidden="true">
-                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
-                    <span className="vpmm-pudica-orbit-core">
-                        <img src="/assets/pudica-emblem-final.png" alt="" />
-                    </span>
-                </div>
-            ),
-            eyebrow: "PUDICA PLATFORM",
-            title: "One Platform. One Trusted Operating Record.",
-            description: "Govern risk, workflows, approvals, response, recovery, compliance, and evidence.",
-            link: "/platform",
-            linkLabel: "Explore Platform Capabilities"
-        }
-    },
-    solutions: {
-        eyebrow: "ENTERPRISE SECURITY SOLUTIONS",
-        title: "Connected Solutions for Real Business Risk",
-        description: "Protect transformation, operate continuously, govern risk, respond decisively, and restore trusted operations.",
-        mainLink: "/solutions",
-        mainLinkLabel: "Explore All Solutions",
-        groups: [
-            { title: "Transform Securely", links: [["Business Transformation", "/solutions/secure-business-transformation"], ["NativeTrust Workspace", "/solutions/nativetrust-workspace"]] },
-            { title: "Operate Securely", links: [["Integrated SecOps", "/solutions/integrated-security-operations"], ["Enterprise Risk", "/solutions/enterprise-risk-management"]] },
-            { title: "Respond & Recover", links: [["Autonomous Incident Response", "/solutions/autonomous-incident-response"], ["Cyber Resilience", "/solutions/cyber-resilience-recovery"]] }
-        ],
-        featured: {
-            visual: (
-                <div className="vpmm-pudica-orbit" aria-hidden="true">
-                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
-                    <span className="vpmm-pudica-orbit-core">
-                        <img src="/assets/pudica-emblem-final.png" alt="" />
-                    </span>
-                </div>
-            ),
-            eyebrow: "PUDICA SOLUTIONS",
-            title: "One Platform. Connected Security Outcomes.",
-            description: "Six integrated solution families share one asset model, workflow, risk register, and assurance record.",
-            link: "/solutions",
-            linkLabel: "Explore PUDICA Solutions"
-        }
-    },
-    services: {
-        eyebrow: "MANAGED CYBERSECURITY SERVICES",
-        title: "Operate Security Continuously. Prove Every Outcome.",
-        description: "Engage a focused activity, a managed domain, an Integrated Fleet, or Complete 5Pilot Operations.",
-        mainLink: "/services",
-        mainLinkLabel: "Explore All Services",
-        groups: [
-            { title: "Governance & Assurance", links: [["CISO as a Service", "/services/ciso-as-a-service"], ["ISO/IEC 27001 Readiness", "/services/iso-27001-certification-readiness"]] },
-            { title: "Identity & Endpoint", links: [["Managed IAM", "/services/managed-iam"], ["Zero-Trust Endpoint Operations", "/services/zero-trust-endpoint-operations"]] },
-            { title: "Exposure & Remediation", links: [["Vulnerability Remediation", "/services/managed-vulnerability-remediation"], ["ARC Remediation", "/services/arc-remediation"]] }
-        ],
-        featured: {
-            visual: <img className="vpmm-shield-orbit" src="/assets/vpilot-shield-orbit-premium-v2.svg" alt="" />,
-            eyebrow: "5PILOT OPERATIONS",
-            title: "Specialist Teams. One Integrated Operation.",
-            description: "Compass governs. Custodian administers. Vigil observes. ART validates. Phoenix responds.",
-            link: "/company/5pilot-operations",
-            linkLabel: "Meet the 5Pilot Teams"
-        }
-    },
-    frameworks: {
-        eyebrow: "V PILOT FRAMEWORKS",
-        title: "Structure Security Operations. Prove Every Outcome.",
-        description: "Apply repeatable frameworks for threat-informed analysis, independent validation, governed execution, and continuous assurance.",
-        mainLink: "/frameworks",
-        mainLinkLabel: "Explore Frameworks",
-        groups: [
-            { title: "Operating Frameworks", links: [["ProdSecOps", "/frameworks/prodsecops"], ["ProdSecApps", "/frameworks/prodsecapps"]] },
-            { title: "Intelligence & Proving", links: [["5D Threat Intelligence", "/frameworks/5d-threat-intelligence"], ["SecLabs", "/frameworks/seclabs"]] },
-            { title: "Governance", links: [["Shared Responsibility", "/frameworks/shared-responsibility"], ["Evidence by Design", "/frameworks/evidence-by-design"]] }
-        ],
-        featured: {
-            visual: (
-                <div className="vpmm-compass-orbit" aria-hidden="true">
-                    <img src="/assets/vpilot-approved-framework-compass.svg" alt="" />
-                    <span className="vpmm-compass-protect">PROTECT</span>
-                    <span className="vpmm-compass-operate">OPERATE</span>
-                </div>
-            ),
-            eyebrow: "PRODSECOPS FRAMEWORK",
-            title: "Protect What Runs the Business",
-            description: "Connect business context, trusted state, threat intelligence, proving, authority, and recovery.",
-            link: "/frameworks/prodsecops",
-            linkLabel: "Explore ProdSecOps"
-        }
-    },
-    resources: {
-        eyebrow: "V PILOT RESOURCES",
-        title: "Knowledge Designed for Operational Use",
-        description: "Research, frameworks, technical guidance and practical tools for executive, operational, and technical audiences.",
-        mainLink: "/resources",
-        mainLinkLabel: "Explore the Resource Center",
-        groups: [
-            { title: "Insights & Research", links: [["Latest Insights", "/resources/insights"], ["Security Advisories", "/resources/security-advisories"]] },
-            { title: "Guides & Frameworks", links: [["Framework Guides", "/resources/framework-guides"], ["Technical Guides", "/resources/technical-guides"]] },
-            { title: "Documentation", links: [["PUDICA Documentation", "/docs/pudica"], ["Service Documentation", "/docs/services"]] }
-        ],
-        featured: {
-            visual: (
-                <div className="vpmm-pudica-orbit" aria-hidden="true">
-                    <img className="vpmm-pudica-orbit-shell" src="/assets/pudica-platform-orbit-shell-final.svg" alt="" />
-                    <span className="vpmm-pudica-orbit-core">
-                        <img src="/assets/pudica-emblem-final.png" alt="" />
-                    </span>
-                </div>
-            ),
-            eyebrow: "FEATURED RESOURCE",
-            title: "PUDICA Platform Overview",
-            description: "One platform. Connected operations. Discover the integrated operational control plane.",
-            link: "/contact",
-            linkLabel: "Download Guide"
-        }
-    }
-};
+function Destination({ to, children, ...props }) {
+  return to === signin ? <a href={to} {...props}>{children}</a> : <Link to={to} {...props}>{children}</Link>;
+}
+function Panel({ item, id, trigger, close }) {
+  const [eyebrow, title, copy, to, cta] = item.feature;
+  return <div className="vpen-panel" id={id} aria-labelledby={trigger}>
+    <div className="vpen-summary"><p className="vpen-label">{item.label}</p><h2>{item.title}</h2><p>{item.intro}</p><Link to={item.href} onClick={close} className="vpen-text-action">{item.cta}<ArrowRight aria-hidden="true" /></Link></div>
+    <div className="vpen-groups" style={{ "--vpen-groups": item.groups.length }}>
+      {item.groups.map(([name, links]) => <div key={name}><h3>{name}</h3><ul>{links.map(([label, href]) => <li key={label}><Destination to={href} onClick={close}>{label}<ArrowRight aria-hidden="true" /></Destination></li>)}</ul></div>)}
+    </div>
+    <aside className="vpen-feature"><p className="vpen-label">{eyebrow}</p><h3>{title}</h3><p>{copy}</p><Link to={to} className="vpen-text-action" onClick={close}>{cta}<ArrowRight aria-hidden="true" /></Link></aside>
+  </div>;
+}
 
 export default function Header() {
-    const [activeMenu, setActiveMenu] = useState(null);
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const headerRef = useRef(null);
-    const location = useLocation();
-
-    const closeAll = () => {
-        setActiveMenu(null);
-        setMobileOpen(false);
-    };
-
-    useEffect(() => closeAll(), [location.pathname]);
-
-    useEffect(() => {
-        const onKey = (event) => {
-            if (event.key === "Escape") closeAll();
-        };
-        const onPointer = (event) => {
-            if (headerRef.current && !headerRef.current.contains(event.target)) {
-                setActiveMenu(null);
-            }
-        };
-        document.addEventListener("keydown", onKey);
-        document.addEventListener("pointerdown", onPointer);
-        return () => {
-            document.removeEventListener("keydown", onKey);
-            document.removeEventListener("pointerdown", onPointer);
-        };
-    }, []);
-
-    const toggleMenu = (key) => {
-        setActiveMenu((current) => current === key ? null : key);
-    };
-
-    return (
-        <header ref={headerRef} className="vph-header">
-            <div className="vph-utility">
-                <div className="vph-shell vph-utility-inner">
-                    <nav aria-label="Utility navigation">
-                        <Link to="/support">Customer Support</Link>
-                        <Link to="/careers">Careers</Link>
-                        <Link to="/contact">Contact</Link>
-                    </nav>
-                </div>
-            </div>
-
-            <div className="vph-primary">
-                <div className="vph-shell vph-primary-inner">
-                    <Link className="vph-logo" to="/" aria-label="V Pilot home" onClick={closeAll}>
-                        <ApprovedVPilotBrand compact />
-                    </Link>
-
-                    <nav className={`vph-nav ${mobileOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-                        {navItems.map((item) => item.menu ? (
-                            <button
-                                key={item.key}
-                                type="button"
-                                className={activeMenu === item.key ? "is-active" : ""}
-                                aria-expanded={activeMenu === item.key}
-                                aria-controls={`vph-menu-${item.key}`}
-                                onClick={() => toggleMenu(item.key)}
-                            >
-                                {item.label}<ChevronDown size={14} />
-                            </button>
-                        ) : (
-                            <NavLink key={item.key} to={item.to} onClick={closeAll}>{item.label}</NavLink>
-                        ))}
-
-                        <div className="vph-mobile-actions">
-                            <Link to="/support">Customer Support</Link>
-                            <Link to="/careers">Careers</Link>
-                            <Link to="/contact">Contact</Link>
-                            <Link className="vph-mobile-pudica" to="/platform">Explore PUDICA</Link>
-                            <Link className="vph-mobile-briefing" to="/contact?intent=executive-briefing">Schedule Executive Briefing</Link>
-                        </div>
-                    </nav>
-
-                    <div className="vph-actions">
-                        <Link className="vph-pudica" to="/platform">Explore PUDICA</Link>
-                        <Link className="vph-briefing" to="/contact?intent=executive-briefing">Schedule Executive Briefing <ArrowRight size={16} /></Link>
-                    </div>
-
-                    <button className="vph-menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button>
-                </div>
-            </div>
-
-            {activeMenu && (
-                <div className="vpm-mega-wrap" id={`vph-menu-${activeMenu}`}>
-                    <UniversalMegaMenu
-                        config={menuConfigs[activeMenu]}
-                        onClose={closeAll}
-                    />
-                </div>
-            )}
-        </header>
-    );
+  const [active, setActive] = useState(null), [mobile, setMobile] = useState(false);
+  const uid = useId(), root = useRef(null), activeButton = useRef(null), mobileButton = useRef(null);
+  const {pathname, search, hash} = useLocation();
+  function close() { setActive(null); setMobile(false); }
+  useEffect(() => { setActive(null); setMobile(false); }, [pathname, search, hash]);
+  useEffect(() => {
+    function outside(event) { if (root.current && !root.current.contains(event.target)) { setActive(null); setMobile(false); } }
+    document.addEventListener("pointerdown", outside);
+    return () => document.removeEventListener("pointerdown", outside);
+  }, []);
+  return <header className="vpen" ref={root} onBlur={(event) => {
+    if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) close();
+  }} onKeyDown={(event) => {
+    if (event.key !== "Escape" || (active === null && !mobile)) return;
+    event.preventDefault();
+    if (active !== null) { setActive(null); activeButton.current?.focus(); }
+    else { setMobile(false); mobileButton.current?.focus(); }
+  }}>
+    <nav className="vpen-utility" aria-label="Utility navigation"><Link to="/support" onClick={close}>Customer support</Link><a href={signin}>PUDICA sign-in</a><Link to="/careers" onClick={close}>Careers</Link><Link to="/contact" onClick={close}>Contact</Link></nav>
+    <div className="vpen-bar">
+      <Link className="vpen-brand" to="/" aria-label="V Pilot home" onClick={close}><ApprovedVPilotBrand compact /></Link>
+      <button ref={mobileButton} className="vpen-toggle" type="button" aria-expanded={mobile} aria-controls={`${uid}-nav`} onClick={() => { setMobile(!mobile); setActive(null); }}>{mobile ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}{mobile ? "Close menu" : "Menu"}</button>
+      <nav className={`vpen-nav ${mobile ? "is-open" : ""}`} id={`${uid}-nav`} aria-label="Primary navigation">
+        <ul>{menus.map((item, i) => <li key={item.label}>
+          <button type="button" id={`${uid}-tab-${i}`} aria-expanded={active === i} aria-controls={`${uid}-panel-${i}`} onClick={(e) => { activeButton.current = e.currentTarget; setActive(active === i ? null : i); }}>{item.label}<ChevronDown aria-hidden="true" /></button>
+          <div hidden={active !== i} id={`${uid}-panel-${i}`}>{active === i && <Panel item={item} id={`${uid}-content-${i}`} trigger={`${uid}-tab-${i}`} close={close} />}</div>
+        </li>)}</ul>
+        <div className="vpen-mobile-links"><Link to={briefing} onClick={close}>Book an executive briefing</Link><a href={signin}>PUDICA sign-in</a><Link to="/support" onClick={close}>Customer support</Link><Link to="/contact" onClick={close}>Contact</Link></div>
+      </nav>
+      <div className="vpen-actions">
+        <Link className="vpen-explore" to="/platform" onClick={close}>Explore PUDICA</Link>
+        <Link className="vpen-briefing" to={briefing} onClick={close}>Book an executive briefing<ArrowRight aria-hidden="true" /></Link>
+      </div>
+    </div>
+  </header>;
 }

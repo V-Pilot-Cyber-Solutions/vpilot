@@ -1,21 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { ApprovedVPilotBrand } from "../VPilotBrand.jsx";
 import "./vpilot-enterprise-footer.css";
 
 const footerGroups = [
   { title: "Platform", items: [
-    ["PUDICA Platform", "/platform", true],
-    ["PUDICA NativeTrust Workspace", "/platform/nativetrust-workspace"],
-    ["Autonomous Remediation", "/platform/autonomous-remediation"],
+    ["PUDICA Autonomy", "/platform", true],
+    ["Autonomous Remediations", "/platform/autonomous-remediation"],
     ["Integrated Security Operations", "/platform/integrated-security-operations"],
     ["Autonomous Resilience", "/platform/autonomous-resilience"],
     ["GRC & Compliance", "/platform/grc-compliance"],
     ["SecLabs & GoldenVault", "/platform/seclabs"],
   ]},
   { title: "Solutions", items: [
-    ["Native Zero-Trust Workspace", "/solutions/nativetrust-workspace"],
+    ["NativeTrust Managed Workspace", "/solutions/nativetrust-workspace"],
     ["Secure Business Transformation", "/solutions/secure-business-transformation"],
     ["Enterprise Risk Management", "/solutions/enterprise-risk-management"],
     ["Incident Response & Forensics", "/solutions/incident-response-forensics"],
@@ -24,9 +23,12 @@ const footerGroups = [
     ["Privacy & Data Protection", "/solutions/privacy-data-protection"],
   ]},
   { title: "Managed Services", items: [
-    ["Complete 5Pilot Operations", "/services/complete-5pilot-operations", true],
+    ["Fully Managed Operations", "/#engagement-options", true],
     ["CISO as a Service", "/services/ciso-as-a-service"],
     ["Managed Vulnerability Remediation", "/services/managed-vulnerability-remediation"],
+    ["Cloud Migrations", "/contact?intent=cloud-migrations"],
+    ["Digital Forensics Investigations", "/contact?intent=digital-forensics-investigations"],
+    ["Application Security Governance", "/contact?intent=application-security-governance"],
     ["Managed SIEM Operations", "/services/managed-siem"],
     ["Managed Identity & Endpoint Operations", "/services/managed-identity-endpoint"],
     ["Incident Readiness & Response", "/services/incident-readiness-response"],
@@ -36,7 +38,6 @@ const footerGroups = [
     ["About V Pilot", "/about-v-pilot"],
     ["Why V Pilot", "/why-v-pilot"],
     ["Security Assurance", "/security-assurance", true],
-    ["5Pilot Operations", "/5pilot-operations"],
     ["Careers", "/careers"],
     ["Contact", "/contact"],
   ]},
@@ -67,12 +68,13 @@ function FooterGroup({ group, open, onToggle }) {
 
 export default function Footer() {
   const [openGroup,setOpenGroup]=useState(null);
+  const { pathname } = useLocation();
   const currentYear=new Date().getFullYear();
   return <footer className="vpf-footer">
-    <section className="vpf-conversion"><div className="vpf-shell vpf-conversion-layout"><div><span>Ready to strengthen your security operations?</span><h2>Strengthen Your Security Operations</h2><p>Discuss your security priorities, operating gaps and assurance requirements with the V Pilot team.</p><small>Managed responsibility <i/> Validated execution <i/> Continuous assurance</small></div><div className="vpf-conversion-actions"><Link className="vpf-cta primary" to="/contact">Schedule Executive Briefing <ArrowRight size={16}/></Link><Link className="vpf-cta secondary" to="/contact">Contact V Pilot</Link></div></div></section>
+    {pathname !== "/" && <section className="vpf-conversion"><div className="vpf-shell vpf-conversion-layout"><div><span>Ready to strengthen your security operations?</span><h2>Strengthen Your Security Operations</h2><p>Discuss your security priorities, operating gaps and assurance requirements with the V Pilot team.</p><small>Managed responsibility <i/> Validated execution <i/> Continuous assurance</small></div><div className="vpf-conversion-actions"><Link className="vpf-cta primary" to="/contact?intent=executive-briefing">Book an executive briefing <ArrowRight size={16}/></Link><Link className="vpf-cta secondary" to="/contact">Contact V Pilot</Link></div></div></section>}
     <div className="vpf-accent" aria-hidden="true"/>
     <section className="vpf-primary"><div className="vpf-shell vpf-primary-layout">
-      <div className="vpf-brand"><Link to="/" className="vpf-logo" aria-label="V Pilot home"><ApprovedVPilotBrand/></Link><h2>We Pilot Your Security Operations.</h2><p>V Pilot delivers accountable managed cybersecurity operations across governance, identity, endpoints, monitoring, remediation, incident response, recovery and continuous assurance.</p></div>
+      <div className="vpf-brand"><Link to="/" className="vpf-logo" aria-label="V Pilot home"><ApprovedVPilotBrand/></Link><h2>We Pilot Your Security Operations.</h2><p>V Pilot delivers accountable managed cybersecurity operations across governance, identity, endpoints, monitoring, remediation, incident response, recovery and continuous assurance.</p><a href="https://pudica.io/MicrosoftIdentity/Account/SignIn">Sign in to PUDICA (pudica.io)</a></div>
       <nav className="vpf-nav" aria-label="Footer">{footerGroups.map((group,index)=><FooterGroup key={group.title} group={group} open={openGroup===index} onToggle={()=>setOpenGroup(openGroup===index?null:index)}/>)}</nav>
     </div></section>
     <section className="vpf-legal-strip">
