@@ -1,88 +1,113 @@
-import { useEffect, useId, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import { ApprovedVPilotBrand } from "../VPilotBrand.jsx";
-import "./vpilot-enterprise-nav.css";
+import { useEffect, useRef, useState } from "react";
+import { Icon } from "./Icon";
+import { Btn } from "./atoms";
+import { BrandLogo, Emblem } from "./brand";
+import { MENUS } from "../data/navigation";
+import { useMedia } from "../hooks/index";
+import { HEADER_CTA, OFFER, PUDICA_SIGNIN } from "../lib/config";
+import { Link, contactTo, offerTo, useRouter } from "../lib/router";
 
-const signin = "https://pudica.io/MicrosoftIdentity/Account/SignIn";
-const briefing = "/contact?intent=executive-briefing";
-const inquiry = (intent) => `/contact?intent=${intent}`;
-const menus = [
-  { label: "Company", title: "Your cyber operating partner", intro: "V Pilot runs agreed cybersecurity operations. Your leadership retains material approvals and formal risk acceptance.", href: "/about-v-pilot", cta: "About V Pilot", groups: [
-    ["Who we are", [["About V Pilot", "/about-v-pilot"], ["Why V Pilot", "/why-v-pilot"], ["Careers", "/careers"]]],
-    ["How we work", [["Operating model & decision rights", "/#how-we-operate"], ["Security assurance", "/security-assurance"], ["Engagement options", "/#engagement-options"]]],
-  ], feature: ["ACCOUNTABILITY", "Know who owns the work", "See how ownership, escalation and verification support executive oversight.", "/#how-we-operate", "See how we operate"] },
-  { label: "PUDICA Autonomy", title: "Validate before you act", intro: "V Pilot’s flagship SaaS platform connects technical evidence, isolated validation, approval and production verification.", href: "/platform", cta: "View platform overview", groups: [
-    ["Capabilities", [["Autonomous Remediations", "/platform/autonomous-remediation"], ["Integrated Security Operations", "/platform/integrated-security-operations"], ["Autonomous Resilience", "/platform/autonomous-resilience"], ["GRC & Operational Evidence", "/platform/grc-compliance"]]],
-    ["Validation & access", [["GoldenVault & SecLabs", "/platform/seclabs"], ["Illustrative decision record", "/#decision-evidence"], ["PUDICA sign-in (pudica.io)", signin]]],
-  ], feature: ["PLATFORM CONTROLS", "Evidence supports approval", "GoldenVault preserves versioned state. SecLabs tests eligible actions before the authorised owner decides what runs.", "/platform/seclabs", "Explore validation"] },
-  { label: "Solutions", title: "Solve a business security priority", intro: "Combine the right capabilities for a cloud programme, distributed workforce or critical service that needs to recover.", href: "/solutions", cta: "View all solutions", groups: [
-    ["Transform & operate", [["Secure Business Transformation", "/solutions/secure-business-transformation"], ["NativeTrust Managed Workspace", "/solutions/nativetrust-workspace"], ["Integrated Security Operations", "/solutions/integrated-security-operations"]]],
-    ["Govern & recover", [["Enterprise Risk Management", "/solutions/enterprise-risk-management"], ["Incident Response & Forensics", "/solutions/incident-response-forensics"], ["Cyber Resilience & Recovery", "/solutions/cyber-resilience-recovery"], ["Privacy & Data Protection", "/solutions/privacy-data-protection"]]],
-  ], feature: ["WORKFORCE OPERATIONS", "Secure the whole workspace", "NativeTrust brings remote IT support, identity, endpoints and essential infrastructure into one operating scope.", "/solutions/nativetrust-workspace", "Explore NativeTrust"] },
-  { label: "Services", title: "Choose what V Pilot will run", intro: "Commission specialist work or delegate ongoing operations with clear scope, authority and evidence.", href: "/services", cta: "View service catalogue", groups: [
-    ["Operate & remediate", [["IT & Infrastructure Security", inquiry("infrastructure-operations")], ["Cloud Migrations", inquiry("cloud-migrations")], ["Configuration & Compliance", inquiry("configuration-compliance")], ["Vulnerability Remediation", "/services/managed-vulnerability-remediation"], ["Application Security Governance", inquiry("application-security-governance")]]],
-    ["Detect, respond & recover", [["SIEM & Detection Operations", "/services/managed-siem"], ["Incident Readiness & Response", "/services/incident-readiness-response"], ["Digital Forensics Investigations", inquiry("digital-forensics-investigations")], ["Backup, Recovery & Continuity", "/services/managed-backup-recovery"]]],
-    ["Executive governance", [["CISO as a Service", "/services/ciso-as-a-service"], ["Certification Readiness", "/services/iso-27001-certification-readiness"], ["DPO & Privacy Operations", inquiry("privacy-operations")], ["Enterprise Risk & Vendor Assurance", inquiry("enterprise-vendor-assurance")]]],
-  ], feature: ["ENGAGEMENT MODELS", "Define the scope and authority", "Compare specialist, co-managed and fully managed delivery. Agree who operates each control and who approves material changes.", "/#engagement-options", "Compare engagement options"] },
-  { label: "Frameworks", title: "How we govern the work", intro: "Apply a consistent method for infrastructure and application security without losing sight of production dependencies or decision rights.", href: "/frameworks", cta: "View all frameworks", groups: [
-    ["Operating frameworks", [["ProdSecOps: infrastructure security", "/frameworks/prodsecops"], ["ProdSecApps: application governance", "/frameworks/prodsecapps"]]],
-    ["Assurance practices", [["Shared responsibility", "/frameworks/shared-responsibility"], ["Evidence by design", "/frameworks/evidence-by-design"], ["5D Threat Intelligence", "/frameworks/5d-threat-intelligence"]]],
-  ], feature: ["PRODSECOPS", "Protect what runs the business", "Plan security changes around service dependencies, approved change windows, detection and recovery.", "/frameworks/prodsecops", "Explore ProdSecOps"] },
-  { label: "Resources", title: "Resources for security leaders", intro: "Review capabilities, operating guidance and technical references before defining scope or preparing a decision.", href: "/resources", cta: "Browse resources", groups: [
-    ["For decision-makers", [["Insights", "/resources/insights"], ["Solution briefs", "/resources/solution-briefs"]]],
-    ["For delivery teams", [["Technical guides", "/resources/technical-guides"], ["Security advisories", "/resources/security-advisories"], ["PUDICA documentation", "/docs/pudica"], ["Service documentation", "/docs/services"]]],
-  ], feature: ["WORKED EXAMPLE", "Review a change decision", "See an illustrative record of validation, approval and production closure criteria.", "/#decision-evidence", "View the example"] },
-];
-
-function Destination({ to, children, ...props }) {
-  return to === signin ? <a href={to} {...props}>{children}</a> : <Link to={to} {...props}>{children}</Link>;
-}
-function Panel({ item, id, trigger, close }) {
-  const [eyebrow, title, copy, to, cta] = item.feature;
-  return <div className="vpen-panel" id={id} aria-labelledby={trigger}>
-    <div className="vpen-summary"><p className="vpen-label">{item.label}</p><h2>{item.title}</h2><p>{item.intro}</p><Link to={item.href} onClick={close} className="vpen-text-action">{item.cta}<ArrowRight aria-hidden="true" /></Link></div>
-    <div className="vpen-groups" style={{ "--vpen-groups": item.groups.length }}>
-      {item.groups.map(([name, links]) => <div key={name}><h3>{name}</h3><ul>{links.map(([label, href]) => <li key={label}><Destination to={href} onClick={close}>{label}<ArrowRight aria-hidden="true" /></Destination></li>)}</ul></div>)}
+/* ==========================================================================
+   OFFER TICKER + HEADER
+   ========================================================================== */
+function OfferTicker({ reduced }) {
+  if (!OFFER.enabled) return <p className="utility__static">Managed cybersecurity operations &amp; assurance.</p>;
+  const items = [
+    <span key="a"><b>{OFFER.discount}</b> {OFFER.service}</span>,
+    <span key="b">{OFFER.urgency}: clear accountability, operational privacy, continuous evidence</span>,
+    <Link key="d" to={offerTo()} className="ticker__cta">{OFFER.cta} <Icon name="arrow" size={13} /></Link>,
+  ];
+  const one = (suffix, hidden) => items.map((it, k) => (<span className="ticker__item" key={`${suffix}${k}`} aria-hidden={hidden ? "true" : undefined}>{it}<i className="ticker__sep" aria-hidden="true" /></span>));
+  return (
+    <div className="ticker" role="region" aria-label="Current campaign">
+      <Link to={offerTo()} className="ticker__badge"><Icon name="flame" size={14} />{OFFER.badge}</Link>
+      {reduced ? (<p className="ticker__static"><b>{OFFER.discount}</b> {OFFER.service}. <Link to={offerTo()} className="ticker__cta">{OFFER.cta} <Icon name="arrow" size={13} /></Link></p>)
+        : (<div className="ticker__viewport"><div className="ticker__track"><div className="ticker__set">{one("a", false)}{one("b", true)}</div><div className="ticker__set" aria-hidden="true">{one("c", true)}{one("d", true)}</div></div></div>)}
     </div>
-    <aside className="vpen-feature"><p className="vpen-label">{eyebrow}</p><h3>{title}</h3><p>{copy}</p><Link to={to} className="vpen-text-action" onClick={close}>{cta}<ArrowRight aria-hidden="true" /></Link></aside>
-  </div>;
+  );
 }
-
-export default function Header() {
-  const [active, setActive] = useState(null), [mobile, setMobile] = useState(false);
-  const uid = useId(), root = useRef(null), activeButton = useRef(null), mobileButton = useRef(null);
-  const {pathname, search, hash} = useLocation();
-  function close() { setActive(null); setMobile(false); }
-  useEffect(() => { setActive(null); setMobile(false); }, [pathname, search, hash]);
+export function Header({ reduced }) {
+  const { path, hash, nonce } = useRouter();
+  const [open, setOpen] = useState(null);
+  const [drawer, setDrawer] = useState(false);
+  const [acc, setAcc] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef(null);
+  const wide = useMedia("(min-width: 1181px)", true);
+  const closeTimer = useRef(null);
+  /* Close menus on every navigation, including same-path hash jumps. */
+  useEffect(() => { setOpen(null); setDrawer(false); }, [path, hash, nonce]);
   useEffect(() => {
-    function outside(event) { if (root.current && !root.current.contains(event.target)) { setActive(null); setMobile(false); } }
-    document.addEventListener("pointerdown", outside);
-    return () => document.removeEventListener("pointerdown", outside);
+    let raf = 0;
+    const on = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        setScrolled(y > 8);
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        document.documentElement.style.setProperty("--progress", h > 0 ? String(Math.min(1, y / h)) : "0");
+      });
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", on); window.removeEventListener("resize", on); };
+  }, [path]);
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") { setOpen(null); setDrawer(false); } };
+    const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) setOpen(null); };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => { document.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onDown); };
   }, []);
-  return <header className="vpen" ref={root} onBlur={(event) => {
-    if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) close();
-  }} onKeyDown={(event) => {
-    if (event.key !== "Escape" || (active === null && !mobile)) return;
-    event.preventDefault();
-    if (active !== null) { setActive(null); activeButton.current?.focus(); }
-    else { setMobile(false); mobileButton.current?.focus(); }
-  }}>
-    <nav className="vpen-utility" aria-label="Utility navigation"><Link to="/support" onClick={close}>Customer support</Link><a href={signin}>PUDICA sign-in</a><Link to="/careers" onClick={close}>Careers</Link><Link to="/contact" onClick={close}>Contact</Link></nav>
-    <div className="vpen-bar">
-      <Link className="vpen-brand" to="/" aria-label="V Pilot home" onClick={close}><ApprovedVPilotBrand compact /></Link>
-      <button ref={mobileButton} className="vpen-toggle" type="button" aria-expanded={mobile} aria-controls={`${uid}-nav`} onClick={() => { setMobile(!mobile); setActive(null); }}>{mobile ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}{mobile ? "Close menu" : "Menu"}</button>
-      <nav className={`vpen-nav ${mobile ? "is-open" : ""}`} id={`${uid}-nav`} aria-label="Primary navigation">
-        <ul>{menus.map((item, i) => <li key={item.label}>
-          <button type="button" id={`${uid}-tab-${i}`} aria-expanded={active === i} aria-controls={`${uid}-panel-${i}`} onClick={(e) => { activeButton.current = e.currentTarget; setActive(active === i ? null : i); }}>{item.label}<ChevronDown aria-hidden="true" /></button>
-          <div hidden={active !== i} id={`${uid}-panel-${i}`}>{active === i && <Panel item={item} id={`${uid}-content-${i}`} trigger={`${uid}-tab-${i}`} close={close} />}</div>
-        </li>)}</ul>
-        <div className="vpen-mobile-links"><Link to={briefing} onClick={close}>Book an executive briefing</Link><a href={signin}>PUDICA sign-in</a><Link to="/support" onClick={close}>Customer support</Link><Link to="/contact" onClick={close}>Contact</Link></div>
-      </nav>
-      <div className="vpen-actions">
-        <Link className="vpen-explore" to="/platform" onClick={close}>Explore PUDICA</Link>
-        <Link className="vpen-briefing" to={briefing} onClick={close}>Book an executive briefing<ArrowRight aria-hidden="true" /></Link>
+  useEffect(() => { if (wide) setDrawer(false); }, [wide]);
+  useEffect(() => { document.body.classList.toggle("no-scroll", drawer); return () => document.body.classList.remove("no-scroll"); }, [drawer]);
+  const enter = (k) => { clearTimeout(closeTimer.current); if (wide) setOpen(k); };
+  const leave = () => { clearTimeout(closeTimer.current); closeTimer.current = setTimeout(() => setOpen(null), 140); };
+  const inList = (list) => (list || []).some((x) => path === x || path.startsWith(x + "/"));
+  const isActive = (m) => inList(m.match) && !inList(m.exclude);
+  return (
+    <header ref={headerRef} className={`masthead ${scrolled ? "is-scrolled" : ""}`} onMouseLeave={leave}>
+      <div className="progress" aria-hidden="true" />
+      <div className="utility"><div className="utility__in"><OfferTicker reduced={reduced} />
+        <div className="utility__links"><Link to="/support">Customer Support</Link><Link to="/contact">Contact</Link><a className="utility__signin" href={PUDICA_SIGNIN} target="_blank" rel="noopener noreferrer"><Emblem kind="pudica" size={14} />PUDICA Sign-in <Icon name="external" size={11} /></a></div></div></div>
+      <div className="primary">
+        <Link className="brand" to="/" aria-label="V Pilot Cyber Solutions LLP, home"><BrandLogo reduced={reduced} width="190" height="87" /></Link>
+        {wide && (<nav className="menus" aria-label="Primary"><ul>{MENUS.map((m) => (
+          <li key={m.key} onMouseEnter={() => enter(m.key)}>
+            <Link className={`menu-link ${isActive(m) ? "is-current" : ""} ${open === m.key ? "is-open" : ""}`} to={m.to} aria-current={path === m.to ? "page" : undefined} onFocus={() => open && setOpen(m.key)}>{m.label}</Link>
+            <button type="button" className={`menu-caret ${open === m.key ? "is-open" : ""}`} aria-label={`${m.label} menu`} aria-expanded={open === m.key} aria-controls={`panel-${m.key}`} onClick={() => setOpen(open === m.key ? null : m.key)}><Icon name="chevron" size={12} /></button>
+          </li>))}</ul></nav>)}
+        <div className="primary__actions"><Btn to={contactTo(HEADER_CTA.interest)} variant="cyan" size="sm" className="btn--trial">{HEADER_CTA.label}</Btn>
+          {!wide && (<button type="button" className="icon-btn" aria-expanded={drawer} aria-controls="drawer" aria-label={drawer ? "Close menu" : "Open menu"} onClick={() => setDrawer((d) => !d)}><Icon name={drawer ? "close" : "menu"} size={22} /></button>)}</div>
       </div>
-    </div>
-  </header>;
+      {wide && MENUS.map((m) => (
+        <div key={m.key} id={`panel-${m.key}`} className={`mega ${open === m.key ? "is-open" : ""}`} role="region" aria-label={m.label} hidden={open !== m.key} onMouseEnter={() => enter(m.key)}>
+          {(
+            <div className="mega__in">
+              <div className="mega__lead"><p className="mega__kicker">{m.label}</p><p className="mega__title">{m.lead}</p><Link className="mega__all" to={m.to}>View {m.label} <Icon name="arrow" size={14} /></Link></div>
+              <div className={`mega__groups ${m.wide ? "mega__groups--3" : ""}`}>{m.groups.map((g) => (<div key={g.title} className="mega__group"><p className="mega__gtitle">{g.title}</p><ul>{g.links.map(([t, h]) => (<li key={t}><Link to={h}>{t}</Link></li>))}</ul></div>))}{m.note && <p className="mega__note">{m.note}</p>}</div>
+              <Link className="mega__feature" to={m.feature[1]}>{m.emblem && <Emblem kind={m.emblem} size={64} className="mega__emb" />}<span>{m.feature[0]}</span><Icon name="arrow" /></Link>
+            </div>
+          )}
+        </div>
+      ))}
+      {!wide && (
+        <div id="drawer" className={`drawer ${drawer ? "is-open" : ""}`} hidden={!drawer}>
+          <nav aria-label="Primary mobile">
+            {MENUS.map((m) => (
+              <div key={m.key} className="acc">
+                <button type="button" className="acc__btn" aria-expanded={acc === m.key} onClick={() => setAcc(acc === m.key ? null : m.key)}><span>{m.label}<small>{m.lead}</small></span><Icon name="chevron" /></button>
+                <div className="acc__panel" hidden={acc !== m.key}>
+                  {(<><ul><li><Link to={m.to}><b>{m.label} overview</b></Link></li></ul>{m.groups.map((g) => (<div key={g.title}><p className="mega__gtitle">{g.title}</p><ul>{g.links.map(([t, h]) => (<li key={t}><Link to={h}>{t}</Link></li>))}</ul></div>))}{m.note && <p className="mega__note">{m.note}</p>}</>)}
+                </div>
+              </div>
+            ))}
+            <div className="drawer__cta"><Btn to={contactTo(HEADER_CTA.interest)} variant="cyan">{HEADER_CTA.label}</Btn><Btn to={contactTo("PUDICA Autonomy demo")} variant="outline">Request a PUDICA Demo</Btn></div>
+            <div className="drawer__utility"><Link to="/support">Customer Support</Link><Link to="/contact">Contact</Link><a href={PUDICA_SIGNIN} target="_blank" rel="noopener noreferrer">PUDICA Sign-in (pudica.io)</a></div>
+          </nav>
+        </div>
+      )}
+    </header>
+  );
 }

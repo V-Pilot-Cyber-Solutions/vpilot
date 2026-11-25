@@ -1,0 +1,63 @@
+/* Shared card system: service cards, solution cards, points and the highlighted-card surface. */
+.card__cta svg { transition: transform 0.25s var(--ease); }
+.card__cta:hover svg { transform: translateX(4px); }
+.delivery { display: grid; gap: 10px; margin-top: 26px; padding: 20px 24px; font-size: 15.5px; }
+.delivery b { color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card { display: flex; flex-direction: column; padding: 26px 24px 24px; }
+.card__group { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.card h3 { font-size: 21px; margin-bottom: 12px; }
+.card__scope { font-size: 15px; line-height: 1.6; }
+.card__briefs { display: grid; gap: 8px; margin-top: 14px; }
+.card__briefs a { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: rgba(7, 92, 150, 0.06); border: 1px solid #cfe3f2; text-decoration: none; color: var(--muted); font-size: 13.5px; line-height: 1.45; transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease); }
+.card__briefs a:hover { background: #e6f2fb; border-color: var(--blue); transform: translateX(3px); }
+.card__briefs svg { flex: none; margin-top: 3px; color: var(--blue); }
+.card__briefs b { display: block; color: var(--ink); font-family: var(--font-display); font-size: 14.5px; }
+.card__ev { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 14px; color: var(--muted); }
+.card .card__ev { margin-top: auto; }
+.card__scope + .card__ev,
+.card__briefs + .card__ev { margin-top: 18px; }
+.card__ev b { display: block; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 4px; }
+.card__cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-weight: 600; font-size: 15px; text-decoration: none; }
+.card--umbrella { --acc1: #0b5cab; --acc2: #22a06b; border-color: #9cc4e0; }
+.sol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.sol--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sol__card { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 30px 28px 26px; }
+.sol__card h3 { font-size: 22px; }
+.sol__short { font-weight: 600; color: var(--ink); }
+.sol__card .textlink { margin-top: auto; padding-top: 8px; }
+.points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.points--stack { grid-template-columns: 1fr; }
+.point { display: flex; flex-direction: column; gap: 12px; padding: 24px 22px; }
+.point h3 { font-size: 18.5px; }
+.point p { font-size: 15px; }
+:where(.card, .sol__card, .point, .delivery) {
+  position: relative; background: var(--card-bg); border: 1px solid var(--card-edge); border-radius: var(--radius); box-shadow: var(--card-shadow); transition: box-shadow 0.4s var(--ease), border-color 0.4s, transform 0.3s var(--ease);
+}
+:where(.card, .sol__card, .point, .delivery)::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 1; pointer-events: none; background: linear-gradient(90deg, var(--acc1, var(--blue)), var(--acc2, var(--cyan))); opacity: 0.75; transform: scaleX(0.22); transform-origin: left; transition: transform 0.55s var(--ease), opacity 0.3s; border-radius: var(--radius) var(--radius) 0 0;
+}
+:where(.card, .sol__card, .point, .delivery):hover {
+  border-color: #9cc4e0; box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(6, 26, 46, 0.08), 0 28px 46px -24px rgba(7, 92, 150, 0.6);
+}
+:where(.card, .sol__card, .point, .delivery):hover::before { transform: scaleX(1); opacity: 1; }
+@media (max-width: 1280px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
+  .sol--three,
+  .points,
+  .sol { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .cards,
+  .cards--2 { grid-template-columns: 1fr; }
+}
+.sol__tag { font: 700 11px var(--font-display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); }
+@media print {
+  .card,
+  .sol__card,
+  .point { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
+}
+.cards--2 .card h3 { margin-bottom: 8px; }

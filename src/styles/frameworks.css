@@ -1,0 +1,37 @@
+/* Frameworks page (ProdSecOps and ProdSecApps). */
+.mgrid__tile--ops .fmark__word,
+.mgrid__tile--apps .fmark__word { fill: #dbeaf6; }
+.mgrid__tile--ops .fmark__name,
+.mgrid__tile--apps .fmark__name { fill: #fff; }
+.fw { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.fw__card { --acc1: var(--blue); --acc2: var(--cyan); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 30px 32px 32px; }
+.fw__card--apps { --acc1: #6d4cff; --acc2: #e08bff; }
+.fw__card > .fmark { align-self: center; margin-bottom: 8px; }
+.fw__tag { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--blue); margin: 10px 0 12px; }
+.fw__card--apps .fw__tag,
+.fw__card--apps .textlink { color: #5b3fe0; }
+.fw__tag span { font-weight: 500; font-size: 15px; color: var(--muted); }
+.fw__card h3 { font-size: 24px; margin-bottom: 10px; }
+.fw__card .textlink { margin-top: 18px; }
+.mgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-bottom: 26px; }
+.mgrid__tile { display: grid; justify-items: center; gap: 10px; padding: 30px 20px 22px; border-radius: 20px; border: 1px solid var(--card-edge); box-shadow: var(--shadow-1); text-align: center; font-size: 14px; color: var(--muted); }
+.mgrid__tile--ops { background: radial-gradient(400px 220px at 50% 0%, rgba(28, 123, 224, 0.35), transparent 70%), var(--navy); border-color: rgba(116, 233, 239, 0.3); color: #b7d0e2; }
+.mgrid__tile--apps { background: radial-gradient(400px 220px at 50% 0%, rgba(109, 76, 255, 0.38), transparent 70%), #120b34; border-color: rgba(190, 150, 255, 0.35); color: #cdbdf5; }
+.mgrid__tile--light { background: var(--card-bg); }
+:where(.fw__card) {
+  position: relative; background: var(--card-bg); border: 1px solid var(--card-edge); border-radius: var(--radius); box-shadow: var(--card-shadow); transition: box-shadow 0.4s var(--ease), border-color 0.4s, transform 0.3s var(--ease);
+}
+:where(.fw__card)::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 1; pointer-events: none; background: linear-gradient(90deg, var(--acc1, var(--blue)), var(--acc2, var(--cyan))); opacity: 0.75; transform: scaleX(0.22); transform-origin: left; transition: transform 0.55s var(--ease), opacity 0.3s; border-radius: var(--radius) var(--radius) 0 0;
+}
+:where(.fw__card):hover {
+  border-color: #9cc4e0; box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(6, 26, 46, 0.08), 0 28px 46px -24px rgba(7, 92, 150, 0.6);
+}
+:where(.fw__card):hover::before { transform: scaleX(1); opacity: 1; }
+@media (max-width: 1024px) {
+  .mgrid,
+  .fw { grid-template-columns: 1fr; }
+}
+@media print {
+  .fw__card { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
+}

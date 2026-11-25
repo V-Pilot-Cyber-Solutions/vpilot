@@ -1,5 +1,4 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
-Sitemap: https://5dcyber.site/sitemap.xml
 
-
+Sitemap: https://vpilot.org/sitemap.xml

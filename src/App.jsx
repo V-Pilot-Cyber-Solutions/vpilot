@@ -1,93 +1,140 @@
-import {
-    Navigate,
-    Route,
-    Routes,
-} from "react-router-dom";
+import "./styles/base.css";
+import "./styles/shared.css";
+import "./styles/cards.css";
+import "./styles/header.css";
+import "./styles/footer.css";
+import "./styles/ask-vpilot.css";
+import "./styles/platform.css";
+import { useEffect, useMemo, useRef } from "react";
+import { AskVPilot } from "./components/AskVPilot";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { LEGAL_DOCS } from "./data/legal";
+import { ALIASES, bySlug } from "./data/services";
+import { SOLUTIONS } from "./data/solutions";
+import { useReducedMotion, useReveal, useTilt } from "./hooks/index";
+import { DEFAULT_DESC, SITE, SITE_URL } from "./lib/config";
+import { Router, useRouter } from "./lib/router";
+import { CareersPage } from "./pages/CareersPage";
+import { CompanyPage } from "./pages/CompanyPage";
+import { ComparePage } from "./pages/ComparePage";
+import { ContactPage } from "./pages/ContactPage";
+import { FrameworksPage } from "./pages/FrameworksPage";
+import { Home } from "./pages/HomePage";
+import { LegalIndex, LegalPage } from "./pages/LegalPages";
+import { MsoPage } from "./pages/MsoPage";
+import { NotFound } from "./pages/NotFound";
+import { ProductsPage } from "./pages/ProductsPage";
+import { PudicaPage } from "./pages/PudicaPage";
+import { ResourcesPage } from "./pages/ResourcesPage";
+import { SampleDecisionPage } from "./pages/SampleDecisionPage";
+import { ScopeChooser } from "./pages/ScopeChooser";
+import { ServiceDetail } from "./pages/ServiceDetail";
+import { ServicesPage } from "./pages/ServicesPage";
+import { SolutionDetail } from "./pages/SolutionDetail";
+import { SummaryPage } from "./pages/SummaryPage";
+import { SupportPage } from "./pages/SupportPage";
 
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
-import DynamicScrollNavigator from "./components/DynamicScrollNavigator.jsx";
-
-import HomePage from "./pages/HomePage.jsx";
-import PlatformPage from "./pages/PlatformPage.jsx";
-import ServicesPage from "./pages/ServicesPage.jsx";
-import SolutionsPage from "./pages/SolutionsPage.jsx";
-import FrameworksPage from "./pages/FrameworksPage.jsx";
-import InsightsPage from "./pages/InsightsPage.jsx";
-import ResourcesPage from "./pages/ResourcesPage.jsx";
-import ContactPage from "./pages/ContactPage.jsx";
-import SupportPage from "./pages/SupportPage.jsx";
-import CareersPage from "./pages/CareersPage.jsx";
-import SubscribePage from "./pages/SubscribePage.jsx";
-import NotFoundPage from "./pages/NotFoundPage.jsx";
-import {
-    PrivacyPolicyPage,
-    TermsOfUsePage,
-    CookiePolicyPage,
-    SecurityDisclosurePage,
-    AccessibilityPage,
-} from "./pages/LegalTrustPages.jsx";
-
-export default function App() {
-    return (
-        <>
-            <Header />
-            <main id="main-content">
-                <DynamicScrollNavigator />
-
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-
-                    {/* Legacy Company URLs resolve to the single corporate homepage. */}
-                    <Route path="/company" element={<Navigate to="/" replace />} />
-                    <Route path="/company/*" element={<Navigate to="/" replace />} />
-
-                    {/* Company narratives remain part of the canonical homepage. */}
-                    <Route
-                        path="/about-v-pilot"
-                        element={<HomePage initialSection="company-overview" />}
-                    />
-                    <Route
-                        path="/why-v-pilot"
-                        element={<HomePage initialSection="why-v-pilot" />}
-                    />
-                    <Route
-                        path="/security-assurance"
-                        element={<HomePage initialSection="security-assurance" />}
-                    />
-                    <Route
-                        path="/5pilot-operations"
-                        element={<HomePage initialSection="five-pilot-operations" />}
-                    />
-                    <Route
-                        path="/5pilot-ops"
-                        element={<Navigate to="/5pilot-operations" replace />}
-                    />
-
-                    <Route path="/platform" element={<PlatformPage />} />
-                    <Route path="/platform/*" element={<PlatformPage />} />
-                    <Route path="/services" element={<ServicesPage />} />
-                    <Route path="/services/*" element={<ServicesPage />} />
-                    <Route path="/solutions" element={<SolutionsPage />} />
-                    <Route path="/solutions/*" element={<SolutionsPage />} />
-                    <Route path="/frameworks" element={<FrameworksPage />} />
-                    <Route path="/frameworks/*" element={<FrameworksPage />} />
-                    <Route path="/insights" element={<InsightsPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/support" element={<SupportPage />} />
-                    <Route path="/careers" element={<CareersPage />} />
-                    <Route path="/privacy" element={<PrivacyPolicyPage />} />
-                    <Route path="/terms" element={<TermsOfUsePage />} />
-                    <Route path="/cookies" element={<CookiePolicyPage />} />
-                    <Route path="/security-disclosure" element={<SecurityDisclosurePage />} />
-                    <Route path="/accessibility" element={<AccessibilityPage />} />
-                    <Route path="/resources" element={<ResourcesPage />} />
-                    <Route path="/resources/*" element={<ResourcesPage />} />
-                    <Route path="/subscribe" element={<SubscribePage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </main>
-            <Footer />
-        </>
-    );
+/* ==========================================================================
+   ROUTES + APP
+   ========================================================================== */
+export function resolve(path, reduced) {
+  const parts = path.split("/").filter(Boolean);
+  const a = parts[0];
+  const b = parts[1];
+  const T = (title, el, desc, full, extra = {}) => ({ title, el, desc, full, ...extra });
+  if (!a) return T("We Pilot Your Security Operations", <Home reduced={reduced} />, DEFAULT_DESC, "V Pilot | Managed Cybersecurity Operations & Security Automation");
+  if (LEGAL_DOCS[a] && !b) return T(LEGAL_DOCS[a].title, <LegalPage key={a} doc={LEGAL_DOCS[a]} />);
+  switch (a) {
+    case "products":
+      if (!b) return T("Solutions", <ProductsPage />, "Cloud security automation, hybrid managed security operations, workforce endpoint protection and more. Start with the problem you need to solve.", "Solutions: Security Automation and Managed Operations | V Pilot");
+      if (b === "compare") return T("Compare Operating Models", <ComparePage />, "Compare cloud self-managed operations, cloud virtual support, hybrid managed or co-managed operations and NativeTrust Endpoint by who runs the work and what evidence you receive.", "Compare Operating Models | PUDICA Autonomy and NativeTrust Endpoint | V Pilot");
+      break;
+    case "managed-security-operations": return T("Managed Security Operations", <MsoPage />, "Delegate endpoint protection, exposure management, detection, incident response, recovery assurance and application security governance to V Pilot, within agreed scope and approvals.");
+    case "solutions": {
+      if (b === "nativetrust") return T("Choose a scope", <ScopeChooser kind="nativetrust" />, undefined, undefined, { noindex: true });
+      const s = SOLUTIONS.find((x) => x.slug === b);
+      if (s) return T(s.name, <SolutionDetail key={s.slug} item={s} />, s.lead);
+      break;
+    }
+    case "services": {
+      if (!b) return T("Services", <ServicesPage />, "Choose managed security operations, GRC as a Service or specialist engagements. Agree who operates the work, who approves changes and what evidence you receive.", "Cybersecurity Services | V Pilot");
+      const slug = ALIASES[b] || b;
+      if (slug === "__chooser") return T("Choose a scope", <ScopeChooser kind="it-infra" />, undefined, undefined, { noindex: true });
+      const s = bySlug(slug);
+      if (s) return T(s.name, <ServiceDetail key={s.slug} item={s} />, `${s.headline} ${s.scope}`, s.seoTitle);
+      break;
+    }
+    case "pudica-autonomy":
+      if (!b) return T("PUDICA Autonomy", <PudicaPage />, "Automate eligible cloud security workflows, extend across hybrid infrastructure as workflows qualify, and keep control of production change with PUDICA Autonomy.", "PUDICA Autonomy | Security Operations Automation by V Pilot");
+      break;
+    case "resources":
+      if (!b) return T("Resources", <ResourcesPage />);
+      if (b === "frameworks") return T("ProdSecOps & ProdSecApps", <FrameworksPage />, "ProdSecOps and ProdSecApps guide infrastructure and application security as continuous lifecycles. They are operating frameworks, not software products or certification labels.");
+      if (b === "sample-change-decision") return T("Sample change decision", <SampleDecisionPage />);
+      if (b === "executive-assurance-summary") return T("Executive assurance summary", <SummaryPage />);
+      break;
+    case "company":
+      if (!b) return T("Company", <CompanyPage />);
+      if (b === "careers") return T("Careers", <CareersPage />, "Open roles for Cloud Forensics Analyst, DevSecOps Engineer and Pentest Engineer, plus a two-month internship in cloud forensics and application security governance.", "Careers | Cloud Forensics, DevSecOps and Pentest Roles at V Pilot");
+      break;
+    case "contact": return T("Contact", <ContactPage />);
+    case "support": return T("Customer support", <SupportPage />);
+    case "legal": return T("Legal & Trust", <LegalIndex />);
+    default:
+  }
+  return T("Page not found", <NotFound />, undefined, undefined, { noindex: true });
 }
+function upsertHead(tag, key, attrs) {
+  let el = document.head.querySelector(`${tag}[${key[0]}="${key[1]}"]`);
+  if (!el) { el = document.createElement(tag); el.setAttribute(key[0], key[1]); document.head.appendChild(el); }
+  Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+}
+function Shell() {
+  const { path, hash, nonce } = useRouter();
+  const reduced = useReducedMotion();
+  const rootRef = useRef(null);
+  const lastPath = useRef(null);
+  const route = useMemo(() => resolve(path, reduced), [path, reduced]);
+  useReveal(rootRef, !reduced, path);
+  useTilt(rootRef, !reduced);
+  useEffect(() => {
+    const title = route.full || (path === "/" ? `${SITE} | ${route.title}` : `${route.title} | ${SITE}`);
+    const desc = route.desc || DEFAULT_DESC;
+    const url = SITE_URL + (path === "/" ? "/" : path);
+    document.title = title;
+    upsertHead("meta", ["name", "description"], { content: desc });
+    upsertHead("meta", ["name", "robots"], { content: route.noindex ? "noindex,follow" : "index,follow,max-image-preview:large" });
+    upsertHead("link", ["rel", "canonical"], { href: url });
+    upsertHead("meta", ["property", "og:title"], { content: title });
+    upsertHead("meta", ["property", "og:description"], { content: desc });
+    upsertHead("meta", ["property", "og:url"], { content: url });
+    upsertHead("meta", ["name", "twitter:title"], { content: title });
+    upsertHead("meta", ["name", "twitter:description"], { content: desc });
+  }, [path, route]);
+  useEffect(() => {
+    const changed = lastPath.current !== path;
+    lastPath.current = path;
+    if (changed) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (!hash) return undefined;
+    let tries = 0;
+    let t;
+    const go = () => {
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: reduced || changed ? "auto" : "smooth", block: "start" });
+      else if (tries++ < 12) t = setTimeout(go, 60);
+    };
+    t = setTimeout(go, changed ? 80 : 0);
+    return () => clearTimeout(t);
+  }, [path, hash, nonce, reduced]);
+  return (
+    <div ref={rootRef} className={`site ${reduced ? "" : "motion-ok"}`}>
+      <a className="skip" href="#main" onClick={(e) => { e.preventDefault(); const m = document.getElementById("main"); if (m) m.focus(); }}>Skip to content</a>
+      <Header reduced={reduced} />
+      <main id="main" tabIndex={-1} key={path} className="page">{route.el}</main>
+      <Footer reduced={reduced} />
+      <AskVPilot />
+    </div>
+  );
+}
+export default function App() { return (<Router><Shell /></Router>); }

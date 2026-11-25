@@ -1,83 +1,231 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Business Pages -->
   <url>
     <loc>https://vpilot.org/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://vpilot.org/platform</loc>
+    <loc>https://vpilot.org/pudica-autonomy</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://vpilot.org/solutions</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
+    <loc>https://vpilot.org/products</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/products/compare</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://vpilot.org/services</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://vpilot.org/frameworks</loc>
-    <priority>0.8</priority>
+    <loc>https://vpilot.org/managed-security-operations</loc>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/nativetrust-endpoint</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/vulnerability-configuration-management</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/security-baselines-configuration-drift</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/vulnerability-remediation</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/managed-detection-siem-operations</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/incident-readiness-response</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/backup-recovery-assurance</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/application-security-governance</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/managed-iam-operations</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/grc-as-a-service</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/certification-readiness</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/enterprise-risk-vendor-assurance</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/privacy-operations-dpo-support</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/secure-cloud-migration</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/services/digital-forensics-investigation</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/solutions/application-trust</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/solutions/secure-business-transformation</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/solutions/incident-recovery-readiness</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://vpilot.org/resources</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-
-  <!-- Engagement & Information -->
   <url>
-    <loc>https://vpilot.org/insights</loc>
-    <priority>0.8</priority>
+    <loc>https://vpilot.org/resources/frameworks</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/resources/sample-change-decision</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/resources/executive-assurance-summary</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/company</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vpilot.org/company/careers</loc>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vpilot.org/contact</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://vpilot.org/careers</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://vpilot.org/support</loc>
-    <priority>0.5</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
-
-  <!-- Legal & Trust Center -->
+  <url>
+    <loc>https://vpilot.org/legal</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
   <url>
     <loc>https://vpilot.org/privacy</loc>
-    <priority>0.4</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://vpilot.org/terms</loc>
-    <priority>0.4</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://vpilot.org/cookies</loc>
-    <priority>0.4</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://vpilot.org/security-disclosure</loc>
-    <priority>0.4</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://vpilot.org/accessibility</loc>
-    <priority>0.4</priority>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

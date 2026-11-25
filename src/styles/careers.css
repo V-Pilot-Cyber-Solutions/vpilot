@@ -1,0 +1,99 @@
+/* Careers page: roles, internship and the challenge. */
+:where(.role, .track, .week) {
+  position: relative; background: var(--card-bg); border: 1px solid var(--card-edge); border-radius: var(--radius); box-shadow: var(--card-shadow); transition: box-shadow 0.4s var(--ease), border-color 0.4s, transform 0.3s var(--ease);
+}
+:where(.role, .track, .week)::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 1; pointer-events: none; background: linear-gradient(90deg, var(--acc1, var(--blue)), var(--acc2, var(--cyan))); opacity: 0.75; transform: scaleX(0.22); transform-origin: left; transition: transform 0.55s var(--ease), opacity 0.3s; border-radius: var(--radius) var(--radius) 0 0;
+}
+:where(.role, .track, .week):hover {
+  border-color: #9cc4e0; box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(6, 26, 46, 0.08), 0 28px 46px -24px rgba(7, 92, 150, 0.6);
+}
+:where(.role, .track, .week):hover::before { transform: scaleX(1); opacity: 1; }
+.roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.role { display: flex; flex-direction: column; gap: 12px; padding: 28px 24px; font-size: 15px; }
+.role header { display: flex; align-items: center; gap: 14px; }
+.role__tag { font: 700 11px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+.role h3 { font-size: 21px; }
+.role__k { margin-top: 6px; font: 700 11px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+.role ul { display: grid; gap: 7px; }
+.role ul li { position: relative; padding-left: 18px; }
+.role ul li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 2px rgba(7, 92, 150, 0.2); }
+.role .btn { align-self: flex-start; margin-top: auto; }
+.tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.track { display: flex; flex-direction: column; gap: 12px; padding: 28px 26px; }
+.track h3 { font-size: 22px; }
+.weeks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.week { padding: 22px 20px; font-size: 14.5px; }
+.week span { display: block; margin-bottom: 6px; font: 700 11.5px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+.week h3 { margin-bottom: 6px; font-size: 18px; }
+.challenge { background: radial-gradient(900px 480px at 85% 0%, rgba(13, 58, 98, 0.9), transparent 70%), var(--navy); }
+.puzzle { overflow: hidden; border-radius: 22px; border: 1px solid rgba(116, 233, 239, 0.3); background: linear-gradient(170deg, rgba(14, 62, 110, 0.5), rgba(7, 30, 60, 0.8)); }
+.puzzle__tabs { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line-on-dark); }
+.puzzle__tabs button { appearance: none; display: flex; align-items: center; gap: 12px; padding: 18px 22px; text-align: left; cursor: pointer; color: #b7d0e2; background: none; border: 0; border-right: 1px solid var(--line-on-dark); transition: background 0.3s, box-shadow 0.3s; }
+.puzzle__tabs button:last-child { border-right: 0; }
+.puzzle__tabs button > svg:first-child { flex: none; color: var(--cyan); }
+.puzzle__tabs button b { display: block; font-family: var(--font-display); font-size: 17px; color: #fff; }
+.puzzle__tabs button small { display: block; font-size: 12.5px; }
+.puzzle__tabs button.is-on { background: rgba(116, 233, 239, 0.12); box-shadow: inset 0 -3px 0 var(--cyan); }
+.puzzle__ok { margin-left: auto; color: var(--teal-on-dark); }
+.puzzle__panel { display: grid; gap: 20px; padding: 28px; color: #cfe0ee; animation: panelIn 0.5s var(--ease) both; }
+.puzzle__story { font-size: 16.5px; line-height: 1.65; }
+.puzzle__blocks { display: grid; gap: 14px; }
+.code { margin: 0; overflow: hidden; border-radius: 12px; border: 1px solid rgba(116, 233, 239, 0.28); background: #04111f; }
+.code figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 14px; font: 600 12px var(--font-display); letter-spacing: 0.06em; color: var(--cyan); background: #08213b; }
+.code figcaption button { appearance: none; padding: 3px 12px; font-size: 12px; color: var(--cyan); cursor: pointer; background: transparent; border: 1px solid rgba(116, 233, 239, 0.5); border-radius: 999px; }
+.code figcaption button:hover { background: rgba(116, 233, 239, 0.15); }
+.code pre { max-height: 320px; margin: 0; padding: 14px 16px; overflow: auto; font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #d6f4ff; }
+.code pre code { white-space: pre; }
+.puzzle__tasks { display: grid; gap: 8px; counter-reset: t; }
+.puzzle__tasks li { position: relative; padding-left: 36px; counter-increment: t; }
+.puzzle__tasks li::before { content: counter(t); position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--cyan); color: var(--navy); font: 700 12px var(--font-display); }
+.puzzle__hints { display: grid; gap: 8px; }
+.puzzle__hints details { padding: 8px 14px; border: 1px dashed rgba(116, 233, 239, 0.4); border-radius: 10px; }
+.puzzle__hints summary { cursor: pointer; font-weight: 600; color: var(--cyan); }
+.puzzle__hints p { margin-top: 8px; font-size: 14.5px; }
+.puzzle__form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.puzzle__form label { display: grid; flex: 1; gap: 6px; min-width: 240px; font-size: 14px; font-weight: 600; color: #fff; }
+.puzzle__form input { min-height: 50px; padding: 12px 14px; font: 15px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #fff; background: #04111f; border: 1.5px solid rgba(116, 233, 239, 0.5); border-radius: 10px; }
+.puzzle__form input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 4px rgba(116, 233, 239, 0.25); }
+.puzzle__res { min-height: 28px; }
+.puzzle__good,
+.puzzle__bad { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.puzzle__good { color: var(--teal-on-dark); }
+.puzzle__bad { color: var(--amber-on-dark); }
+.challenge__rules { margin-top: 26px; padding: 22px 26px; border-radius: 16px; border: 1px solid var(--line-on-dark); background: rgba(6, 26, 46, 0.6); }
+.challenge__rules h3 { margin-bottom: 10px; font-size: 18px; color: #fff; }
+.challenge__rules ul { display: grid; gap: 8px; font-size: 14.5px; color: var(--muted-on-dark); }
+.challenge__rules li { display: flex; align-items: flex-start; gap: 10px; }
+.challenge__rules li svg { flex: none; margin-top: 3px; color: var(--cyan); }
+.challenge__cta { margin-top: 18px; }
+@media (max-width: 1280px) {
+  .weeks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1100px) {
+  .tracks { grid-template-columns: 1fr; }
+}
+@media (max-width: 1024px) {
+  .roles { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .weeks,
+  .puzzle__tabs { grid-template-columns: 1fr; }
+  .puzzle__tabs button { border-right: 0; border-bottom: 1px solid var(--line-on-dark); }
+  .puzzle__panel { padding: 20px 16px; }
+}
+@media print {
+  .puzzle__form { display: none !important; }
+  .challenge,
+  .puzzle,
+  .code,
+  .code figcaption,
+  .challenge__rules { background: #fff !important; color: #000 !important; box-shadow: none !important; }
+  .code pre,
+  .puzzle__panel,
+  .challenge__rules h3,
+  .challenge__rules ul { color: #000 !important; background: #fff !important; -webkit-text-fill-color: #000 !important; }
+  .role,
+  .track,
+  .week { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
+}

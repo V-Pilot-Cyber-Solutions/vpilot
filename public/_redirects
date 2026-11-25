@@ -1,0 +1,21 @@
+# Netlify / Cloudflare Pages only. GitHub Pages ignores this file; the app redirects in the browser instead (REDIRECTS in src/lib/config.js).
+/operating-model                              /                              301
+/how-we-operate                               /                              301
+/operating-model/frameworks                   /resources/frameworks          301
+/operating-model/engagement                   /services                      301
+/solutions                                    /products                      301
+/solutions/nativetrust-endpoint               /services/nativetrust-endpoint 301
+/products/nativetrust                         /services/nativetrust-endpoint 301
+/products/5pilot-cloud                        /products/compare              301
+/services/ciso-as-a-service                   /services/grc-as-a-service     301
+/pudica-autonomy/architecture                 /pudica-autonomy               301
+/pudica-autonomy/readiness                    /pudica-autonomy               301
+/offers/dpo-onboarding                        /contact                       301
+/services/cloud-migrations                    /services/secure-cloud-migration            301
+/services/siem-detection-operations           /services/managed-detection-siem-operations 301
+/services/digital-forensics-investigations    /services/digital-forensics-investigation   301
+/services/backup-recovery-continuity          /services/backup-recovery-assurance         301
+/services/dpo-privacy-operations              /services/privacy-operations-dpo-support    301
+/services/security-configuration-compliance   /services/security-baselines-configuration-drift 301
+# /solutions/nativetrust is a real page (scope chooser), so the app serves it.
+/*                                            /index.html                    200

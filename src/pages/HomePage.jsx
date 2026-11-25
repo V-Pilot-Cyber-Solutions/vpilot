@@ -1,185 +1,235 @@
-import { useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Workflow, FileCheck2, Layers3, Radar, RotateCcw, DatabaseBackup, FlaskConical, KeyRound, ServerCog, Network, Laptop, Building2, ClipboardCheck, LockKeyhole, Target, UsersRound } from "lucide-react";
-import "./vpilot-home-final.css";
+/* PAGE: Home (/)
+   Styles: styles/home.css
+   Content: data/home.js, data/services.js (HOME_CATEGORIES) */
+import "../styles/home.css";
+import { Fragment, useRef } from "react";
+import { CtaBand } from "../components/CtaBand";
+import { Icon } from "../components/Icon";
+import { AdoptionJourney } from "../components/StepRail";
+import { Btn, Eyebrow, SectionHead } from "../components/atoms";
+import { Emblem, Emblem3D, Tile } from "../components/brand";
+import { IntakeFlow, Ladder } from "../components/platform";
+import { WHY_REASONS } from "../data/company";
+import { BUY_PATHS, CYCLE, FLOW, FLOW_BRANCH, FLOW_DELAYS, FRAMEWORK_RAIL, GAP_PROOF, HANDOFFS, HOME_CATEGORIES, HOME_TOOL_STEPS, LANES, LANE_DELAYS, LANE_STEPS, VALUES } from "../data/home";
+import { bySlug } from "../data/services";
+import { useInView, useParallax, useSequence, useTabVisible } from "../hooks/index";
+import { COMPARE_TO } from "../lib/config";
+import { Link, contactTo } from "../lib/router";
 
-const briefing = "/contact?intent=executive-briefing";
-const signIn = "https://pudica.io/MicrosoftIdentity/Account/SignIn";
-// Contact fallback for offers without a confirmed standalone page.
-const scope = (key) => `/contact?intent=${encodeURIComponent(key)}`;
-
-const services = [
-  [ServerCog, "IT & Infrastructure Security Operations", "Keep essential systems supportable and secure.", "Run agreed identity, endpoint, cloud and server operations. Coordinate patching, service requests and controlled changes.", "Service review covering changes, open issues and owners.", scope("infrastructure-operations")],
-  [Network, "Cloud Migrations", "Move workloads without losing sight of continuity or control.", "Map dependencies and target controls, plan migration waves, and agree cutover, rollback and post-migration checks before moving workloads.", "Migration plan, cutover checklist and acceptance record.", scope("cloud-migrations")],
-  [ClipboardCheck, "Security Configuration & Compliance Management", "Know where deployed configurations differ from approved policy.", "Assess benchmarks, maintain baselines, correct drift and track approved exceptions.", "Baseline, drift, retest and exception record.", scope("configuration-compliance")],
-  [Target, "Vulnerability Remediation", "Close infrastructure and package exposure with evidence.", "Correlate scanner findings with actual exposure, prioritise by business impact, and validate approved treatments before verifying closure.", "Retest evidence or an owned, time-bound exception.", "/services/managed-vulnerability-remediation"],
-  [Layers3, "Application Security Governance", "Make application risk an owned engineering decision.", "Set ownership, security requirements and release criteria. Route design and scan findings through the right engineering and release process.", "Application risk, treatment and release decision record.", scope("application-security-governance")],
-  [Radar, "SIEM & Detection Operations", "Get a useful signal to the right responder.", "Maintain telemetry and configuration-aware monitoring profiles. Test detection logic, alert context, routing and escalation.", "Detection validation and coverage report.", "/services/managed-siem"],
-  [ShieldCheck, "Incident Readiness & Response", "Contain disruption and coordinate a controlled return to service.", "Exercise playbooks, assess business impact and coordinate authorised containment, eradication and restoration.", "Exercised playbook or response decision timeline.", "/services/incident-readiness-response"],
-  [FileCheck2, "Digital Forensics Investigations", "Establish what happened, what was affected and what remains uncertain.", "Preserve and analyse authorised endpoint, cloud and identity evidence. Maintain chain-of-custody records where applicable and separate observed facts from investigative conclusions.", "Forensic timeline, evidence register, findings and limitations.", scope("digital-forensics-investigations")],
-  [DatabaseBackup, "Backup, Recovery & Continuity Assurance", "Demonstrate whether a priority service can recover.", "Review backup coverage, validate restore points and exercise critical dependencies against agreed time and data-loss objectives.", "Restore or recovery exercise evidence and corrective actions.", "/services/managed-backup-recovery"],
-];
-
-const governance = [
-  [Building2, "CISO as a Service", "Give leadership a decision-ready view of risk.", "Connect strategy, ownership, exceptions and investment priorities to current operating evidence.", "Executive risk briefing and treatment roadmap.", "/services/ciso-as-a-service"],
-  [ClipboardCheck, "Certification Readiness & Continuous Compliance", "Build evidence as controls are operated.", "Support ISO/IEC 27001 gap assessment, ISMS readiness, management review and corrective actions.", "Readiness roadmap and evidence inventory.", "/services/iso-27001-certification-readiness"],
-  [LockKeyhole, "DPO & Privacy Operations", "Make privacy accountable in day-to-day work.", "Support applicable privacy readiness, processing inventories, rights workflows and processor oversight.", "Owned privacy action register.", scope("privacy-operations")],
-  [Network, "Enterprise Risk & Vendor Assurance", "Identify business-service and supplier risks that need a decision.", "Assess dependencies and suppliers, review evidence, and track treatments, exceptions and reassessment.", "Risk treatment and supplier assurance records.", scope("enterprise-vendor-assurance")],
-];
-
-const capabilities = [
-  [Target, "Autonomous Remediations", "Close exposure without losing sight of service continuity.", "Start with approved configuration benchmarks. Correlate applicable scanner findings to distinguish configuration corrections from infrastructure and software-package patches. Application findings stay in the portfolio but follow ProdSecApps engineering and release governance.", "Retest, service-health checks and any approved exception.", "/platform/autonomous-remediation"],
-  [Radar, "Integrated Security Operations", "Know whether your detections and response procedures work together.", "Use asset and configuration context to validate SIEM detections, exercise incident playbooks and coordinate eligible identity and access actions within approved authority.", "Detection test, escalation route or authorised response record.", "/platform/integrated-security-operations"],
-  [DatabaseBackup, "Autonomous Resilience", "Show which services can recover, and under what conditions.", "Check backup coverage, validate restore points and rehearse rollback or restoration for eligible workflows. Compare results with agreed recovery objectives and record untested dependencies.", "Restore test results, recovery objectives and outstanding dependencies.", "/platform/autonomous-resilience"],
-  [FileCheck2, "GRC & Operational Evidence", "Give leadership a current view of exceptions and remaining risk.", "Link control evidence, approval decisions, time-bound exceptions and residual risk to the originating workflow and its accountable owner.", "Approval history, exception owner and next review date.", "/platform/grc-compliance"],
-];
-
-const platformControls = [
-  ["Versioned state", "GoldenVault keeps observed configurations separate from approved baselines and preserves the version used for validation."],
-  ["Isolated validation", "SecLabs reconstructs relevant conditions to check compatibility, detection, and rollback or restoration before production reliance."],
-  ["Customer-controlled execution", "The Autonomy Risk Profile routes work to human review, explicit approval, or pre-approved policy. A passing test never grants execution authority."],
-];
-
-const lifecycle = [
-  [Radar, "Acquire and contextualise", "SenseScan acquires authorised configuration evidence across the Six-Layer Technical Taxonomy. Classify the observed state against benchmarks and link it to business services and relevant findings."],
-  [DatabaseBackup, "Preserve in GoldenVault", "Version observed configurations separately from approved baselines, monitoring profiles, playbooks and recovery blueprints."],
-  [FlaskConical, "Validate in SecLabs", "Reconstruct relevant conditions in isolation. Test eligible changes, service compatibility, detection signals and rollback or recovery paths."],
-  [ShieldCheck, "Authorise and operate", "Use the Autonomy Risk Profile to route actions to human review, explicit approval or customer-approved policy execution."],
-  [FileCheck2, "Verify and learn", "Check service health, detection coverage and the outcome after execution. Feed evidence and remaining risk back into GoldenVault."],
-];
-const roles = [
-  [ShieldCheck, "V Pilot operates", "We run the contracted scope, coordinate escalation and report what changed, what was verified and what remains open."],
-  [Workflow, "PUDICA validates and orchestrates", "The platform links evidence, isolated testing, authorised action and production verification for eligible workflows."],
-  [Building2, "Customer leadership retains authority", "Your authorised owners keep material approvals and formal risk acceptance. Business ownership and statutory accountability stay with the customer."],
-];
-const engagements = [
-  [Target, "Specialist Engagement", "Start with a defined migration, remediation, investigation, application review or recovery exercise. Receive the agreed evidence and handover."],
-  [UsersRound, "Co-Managed Operations", "Keep your internal team and agree who operates each control, approves changes and owns escalation."],
-  [ShieldCheck, "Fully Managed Operations", "Delegate day-to-day delivery across the contracted workspace, infrastructure and security scope, with agreed reporting and service levels."],
-];
-const workspace = [
-  [KeyRound, "Identity and access", "Joiners, movers and leavers, MFA, conditional access and privileged administration."],
-  [Laptop, "Devices and customer data", "Device compliance, patching, encryption, approved software, managed browser and supported data loss prevention."],
-  [ServerCog, "Essential infrastructure", "Remote operation of agreed cloud services, business applications and necessary customer-hosted servers."],
-  [ClipboardCheck, "IT support and change", "User support, incident coordination, controlled change and evidence aligned to agreed ISO/IEC 27001 objectives."],
-];
-const decision = [
-  ["Business service", "Remote workforce access."],
-  ["Treatment", "Update the gateway package and correct the configuration deviation."],
-  ["SecLabs checks", "Confirm approved access, expected SIEM signals and a viable rollback path."],
-  ["Decision rights", "The designated change owner approves rollout. Any residual-risk exception goes to the authorised risk owner."],
-  ["Closure criteria", "Verify production access and monitoring. If a check fails, follow the approved rollback or escalation path."],
-];
-
-function Action({ to, children, variant = "primary" }) {
-  return <Link to={to} className={`vp-button is-${variant}`}>{children}<ArrowRight aria-hidden="true" /></Link>;
+/* ==========================================================================
+   HOME · HERO (what customers can delegate; 3D Pilot emblem; value strip)
+   ========================================================================== */
+export function Hero({ reduced }) {
+  const ref = useRef(null);
+  const photo = useRef(null);
+  const inView = useInView(ref, "80px");
+  const tabVisible = useTabVisible();
+  const on = !reduced && inView && tabVisible;
+  useParallax(photo, 0.1);
+  return (
+    <section id="top" ref={ref} className="hero" data-motion={on ? "on" : "off"} aria-labelledby="hero-title">
+      <div className="hero__bg" aria-hidden="true"><div className="hero__photo anim" ref={photo} /><div className="hero__tint" /><div className="hero__grid" /><div className="hero__glow anim" /><div className="hero__pass anim" /><div className="hero__shade" /></div>
+      <div className="wrap hero__in">
+        <div className="hero__copy">
+          <p className="hero__kicker">Your cybersecurity operating partner</p>
+          <h1 id="hero-title"><span className="hero__line">We Pilot Your</span><span className="hero__line hero__line--accent">Security Operations.</span></h1>
+          <p className="hero__tagline">Delegate the work. Keep control of the decisions.</p>
+                  <p className="hero__sub">V Pilot connects IT support, technical cyber operations, executive governance and recovery through one accountable operating model. Our specialists run the responsibilities you delegate, and show what was resolved, what remains exposed and who needs to act. Your leadership retains material approvals and formal risk acceptance.</p>
+          <div className="hero__cta"><Btn to={contactTo("Executive briefing")} variant="cyan">Book an Executive Briefing</Btn><Btn to="/#paths" variant="ghost">Find Your Starting Point</Btn></div>
+        </div>
+        <div className="hero__art">
+          <Emblem3D kind="vpilot" size={270} label="V Pilot emblem" />
+          <ul className="hero__promise" aria-label="Operational promise">{["Every action owned.", "Every decision governed.", "Every outcome verified."].map((t, i) => (<li key={t} style={{ "--i": i }}><Icon name="check" size={16} />{t}</li>))}</ul>
+        </div>
+      </div>
+      <div className="wrap hero__foot">
+        <ul className="values">{VALUES.map((p, i) => (<li key={p.t} style={{ "--i": i }}><span className="values__ico"><Icon name={p.icon} size={26} /></span><span><b>{p.t}</b>{p.d}</span></li>))}</ul>
+      </div>
+    </section>
+  );
 }
-function Heading({ eyebrow, title, id, children }) {
-  return <div className="vp-heading"><p className="vp-kicker">{eyebrow}</p><h2 id={id}>{title}</h2>{children && <p className="vp-lead">{children}</p>}</div>;
+/* HOME · Choose where to start */
+/* HOME · Where to start (three paths + a short PUDICA entry) */
+function BuyPaths() {
+  return (
+    <section id="paths" className="band band--cloud" aria-labelledby="paths-title">
+      <div className="wrap">
+        <SectionHead eyebrow="Where to start" title="What do you need to secure, and who should run the work?" id="paths-title" lead="Pick the closest starting point. Each one separates where your workloads run, where validation happens and who operates the workflows." />
+        <ul className="bpaths">
+          {BUY_PATHS.map((p, k) => (
+            <li key={p.key} className={`bpath bpath--${p.key} tilt reveal`} data-tilt="5" style={{ "--i": k }}>
+              <span className="bpath__n">{String(k + 1).padStart(2, "0")}</span>
+              <Tile icon={p.icon} />
+              <p className="bpath__tag">{p.tag}</p>
+              <h3>{p.title}</h3>
+              <p className="bpath__copy">{p.copy}</p>
+              <p className="bpath__buy"><b>What you are buying</b>{p.buys}</p>
+              <ul className="chips">{p.chips.map((c) => (<li key={c}>{c}</li>))}</ul>
+              <Btn to={p.cta[1]} size="sm">{p.cta[0]}</Btn>
+            </li>
+          ))}
+        </ul>
+        <p className="note reveal">These are starting points, not mutually exclusive packages. NativeTrust Endpoint can be commissioned on its own or alongside PUDICA Autonomy.</p>
+        <p className="inline-links reveal"><Link to={COMPARE_TO}>Compare Operating Models <Icon name="arrow" size={16} /></Link></p>
+      </div>
+    </section>
+  );
 }
-function Cards({ items, className = "", evidenceLabel = "Example deliverable" }) {
-  return <div className={`vp-grid ${className}`}>{items.map(([Icon, title, outcome, copy, evidence, to]) => (
-    <article key={title} className="vp-card" data-vp-motion><Icon className="vp-icon" aria-hidden="true" /><h3>{title}</h3>
-      <p className={copy ? "vp-outcome" : undefined}>{outcome}</p>{copy && <p>{copy}</p>}
-      {evidence && <dl className="vp-deliverable"><dt>{evidenceLabel}</dt><dd>{evidence}</dd></dl>}
-      {to && <Action to={to} variant="text">{to.startsWith("/contact?") ? "Discuss scope" : "Explore scope"}<span className="vp-sr-only">: {title}</span></Action>}
-    </article>
-  ))}</div>;
+/* HOME · How we operate: lanes, one-line operating cycle, framework links */
+function CycleLine() {
+  const { i, setI, bind } = useSequence(CYCLE.length, [1600]);
+  return (
+    <div id="cycle" className="cycleline reveal" {...bind}>
+      <p className="cycleline__k">Operating cycle</p>
+      <ol>{CYCLE.map((c, k) => (<li key={c.k} className={k === i ? "is-active" : k < i ? "is-past" : ""}><button type="button" onClick={() => setI(k)} aria-pressed={k === i}><Icon name={c.icon} size={16} />{c.k}</button></li>))}</ol>
+      <p className="cycleline__t"><b>{CYCLE[i].k}.</b> {CYCLE[i].t}</p>
+    </div>
+  );
 }
-
-export default function HomePage({ initialSection = null }) {
-  const root = useRef(null);
-  const { pathname, hash, search } = useLocation();
-  useEffect(() => {
-    const raw = initialSection || new URLSearchParams(search).get("section") || hash;
-    if (!raw) return;
-    let id = raw.replace(/^#/, "");
-    try { id = decodeURIComponent(id); } catch { /* Keep the original ID. */ }
-    const frame = window.requestAnimationFrame(() => {
-      const target = document.getElementById(id);
-      if (!target || !root.current?.contains(target)) return;
-      const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-      target.scrollIntoView({ block: "start", behavior: reduced ? "instant" : "smooth" });
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [initialSection, pathname, hash, search]);
-  useEffect(() => {
-    const node = root.current;
-    if (!node || typeof window.IntersectionObserver !== "function") return;
-    const observer = new window.IntersectionObserver((entries) => {
-      for (const { isIntersecting, target } of entries) if (isIntersecting) {
-        target.setAttribute("data-vp-entered", "");
-        observer.unobserve(target);
-      }
-    }, { threshold: .12 });
-    node.querySelectorAll("[data-vp-motion]:not([data-vp-entered])").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-  return <main className="vp-home" ref={root}>
-    <section className="vp-hero vp-dark" aria-labelledby="vp-home-title">
-      <img
-        className="vp-hero-backdrop"
-        src="/assets/vpilot-virtual-security-operations-hero.png"
-        width={1024}
-        height={1337}
-        alt=""
-        fetchPriority="high"
-      />
-      <div className="vp-shell vp-hero-layout">
-        <div className="vp-hero-copy">
-          <p className="vp-kicker">Integrated Cyber Operations, Governance &amp; Assurance</p>
-          <h1 id="vp-home-title"><span>We Pilot Your</span>{" "}<strong>Security Operations.</strong></h1>
-          <p className="vp-lead">V Pilot connects IT support, technical cyber operations, executive governance and recovery through one accountable operating model.</p>
-          <p className="vp-lead"><strong>PUDICA Autonomy</strong> converts organizational risk, threat intelligence and trusted technical evidence into validated cyber action.</p>
-          <div className="vp-actions"><Action to={briefing}>Book an executive briefing</Action><Action to="/platform" variant="outline">Explore PUDICA Autonomy</Action></div>
+function FrameworkRail() {
+  return (<ul className="frail">{FRAMEWORK_RAIL.map((f) => (<li key={f.t}><Link to={f.to}><Tile icon={f.icon} mark={f.mark} sm size={20} /><span><b>{f.t}</b>{f.d}</span></Link></li>))}</ul>);
+}
+function ResponsibilitySection() {
+  return (
+    <section id="operating-model" className="band" aria-labelledby="om-title">
+      <div className="wrap">
+        <SectionHead eyebrow="How we operate" title="V Pilot operates. Your leadership decides." id="om-title" lead="Before work begins, we agree which systems and controls V Pilot will run, who approves material changes and where issues escalate. Our specialists maintain the operating backlog and verify the work we can close. Your authorised owners retain material approvals and formal risk acceptance. PUDICA Autonomy supports eligible validation and execution within those boundaries." />
+        <OperatingLanes />
+        <CycleLine />
+        <FrameworkRail />
+        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist, Co-Managed and Fully Managed engagement <Icon name="arrow" size={16} /></Link></p>
+      </div>
+    </section>
+  );
+}
+function ToolsHome() {
+  return (
+    <section id="tools" className="band band--navy pudica pudica--page" aria-labelledby="tools-home-title">
+      <div className="wrap">
+        <SectionHead eyebrow="Work with the tools you already have" title="Turn supported findings and alerts into work someone owns." id="tools-home-title" lead="A scanner finding, security alert, identity or endpoint event, application finding or backup report can start the work. We confirm what can be integrated, imported or reviewed manually. An operator connects the evidence to a service, assigns an owner and defines what will prove closure. Receiving evidence does not grant permission to change a system." />
+        <IntakeFlow steps={HOME_TOOL_STEPS} note={<><b>Keeping your existing tools can work, but not every tool or output is supported.</b> Connector details and validation mechanics sit on the PUDICA page.</>} />
+        <p className="inline-links reveal"><Link to="/pudica-autonomy#validation-architecture">See the Validation Architecture <Icon name="arrow" size={16} /></Link></p>
+      </div>
+    </section>
+  );
+}
+function AutonomyReadinessHome() {
+  return (
+    <section id="autonomy-readiness" className="band" aria-labelledby="ar-home-title">
+      <div className="wrap">
+        <SectionHead eyebrow="Autonomy Readiness" title="Expand automation only when the workflow is ready." id="ar-home-title" lead="Start with observation and recommendations. Progress to human-approved execution, then to policy-governed execution only where repeatability, observability, recovery and human override have been demonstrated. The readiness levels are criteria, not a timetable." />
+        <AdoptionJourney id="readiness-home" />
+        <div className="ladderbox reveal">
+          <div>
+            <p className="ladderbox__k">Levels a workflow can qualify for</p>
+            <h3>A0 to A5 are not a timetable, and nothing progresses automatically.</h3>
+            <p>Each workflow is assessed separately. Novel incidents, irreversible actions, material approvals and formal risk acceptance stay human-accountable.</p>
+            <div className="guard guard--stack"><span className="guard__label">Guardrails</span><ul>{["Human override", "Segregation of duties", "Evidence", "Recovery readiness"].map((g) => (<li key={g}>{g}</li>))}</ul></div>
+          </div>
+          <Ladder />
+        </div>
+        <p className="inline-links reveal"><Link to="/pudica-autonomy#autonomy-readiness">See the full readiness model and planning windows <Icon name="arrow" size={16} /></Link><Link to={contactTo("Autonomy readiness assessment")}>Assess autonomy readiness <Icon name="arrow" size={16} /></Link></p>
+      </div>
+    </section>
+  );
+}
+function ServicesOverview() {
+  return (
+    <section id="services-overview" className="band band--cloud" aria-labelledby="svc-over-title">
+      <div className="wrap">
+        <SectionHead eyebrow="Services" title="Three ways to put V Pilot's specialists to work." id="svc-over-title" lead="Delegate ongoing operations, commission executive governance, or bring in specialists for a defined outcome. Each category has its own scope, owners and evidence. Open a service to see how it works and what you receive." />
+        <ul className="svcats">
+          {HOME_CATEGORIES.map((c, k) => (
+            <li key={c.key} className={`svcat svcat--${c.key} tilt reveal`} data-tilt="4" style={{ "--i": k }}>
+              <header><Tile icon={c.icon} emblem={c.emblem} /><div><p className="svcat__eyebrow">{c.eyebrow}</p><h3>{c.title}</h3></div></header>
+              <p className="svcat__copy">{c.copy}</p>
+              <p className="svcat__for"><Icon name="users" size={15} />{c.for}</p>
+              <ul className="svcat__list">
+                {c.slugs.map((slug) => { const it = bySlug(slug); return (<li key={slug}><Link to={`/services/${slug}`}><span><b>{it.name}</b><small>{it.blurb.split(". ")[0].replace(/\.$/, "")}.</small></span><Icon name="arrow" size={15} /></Link></li>); })}
+              </ul>
+              <p className="svcat__rec"><b>You receive</b>{c.receive}</p>
+              <Btn to={c.cta[1]} size="sm">{c.cta[0]}</Btn>
+            </li>
+          ))}
+        </ul>
+        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist, Co-Managed and Fully Managed engagement <Icon name="arrow" size={16} /></Link><Link to="/services/managed-iam-operations">Managed Identity &amp; Access Operations (related service) <Icon name="arrow" size={16} /></Link></p>
+      </div>
+    </section>
+  );
+}
+export function Home({ reduced }) {
+  return (<><Hero reduced={reduced} /><BuyPaths /><CisoGap /><ResponsibilitySection /><ToolsHome /><AutonomyReadinessHome /><ServicesOverview /><CtaBand title="Bring us one operation you need to make more reliable." lead="Tell us where work is backing up, which system matters most and what your team wants to retain. We'll identify a sensible first step." secondary={null} /></>);
+}
+/* HOME · The operating gap: six steps, one worked example */
+function FindingFlow() {
+  const { i, setI, bind } = useSequence(FLOW.length, FLOW_DELAYS);
+  const cur = FLOW[i];
+  return (
+    <div className="flow" {...bind}>
+      <ol className="flow__row" style={{ "--n": FLOW.length, "--a": i }}>
+        {FLOW.map((s, k) => (
+          <li key={s.t} className={`fnode ${k === i ? "is-active" : ""} ${k < i ? "is-past" : ""} ${s.gate ? "is-gate" : ""}`}>
+            <button type="button" onClick={() => setI(k)} aria-pressed={k === i}><span className="fnode__ico"><Icon name={s.icon} size={20} /></span><span className="fnode__n">{k + 1}</span><span className="fnode__t">{s.t}</span></button>
+          </li>
+        ))}
+      </ol>
+      <div className="flow__detail">
+        <p className="flow__caption"><b>{i + 1}. {cur.t}.</b> {cur.d}</p>
+        <p className="flow__example"><span>Worked example · a change that closes</span>{cur.ex}</p>
+      </div>
+      <p className={`flow__branch ${i >= 4 ? "is-on" : ""}`}><Icon name="restore" size={16} /><span>{FLOW_BRANCH}</span></p>
+      <ol className="flow__trail" aria-label="The worked example so far">{FLOW.map((s, k) => (<li key={s.t} className={k <= i ? "is-on" : ""}><i /></li>))}</ol>
+      <div className="flow__rail"><i className="anim" /><span><Icon name="clipboard" size={14} /> Evidence and executive reporting are outputs throughout the flow.</span></div>
+    </div>
+  );
+}
+function CisoGap() {
+  return (
+    <section id="gap" className="band band--cloud" aria-labelledby="gap-title">
+      <div className="wrap">
+        <header className="gap__head reveal">
+          <Eyebrow>The operating gap</Eyebrow>
+          <h2 id="gap-title">A finding is not a fix. A backup is not a recovery test.</h2>
+          <p className="lead">Tools surface issues. Someone still has to confirm which service is affected, decide what can change and verify that the result holds in production. We agree who owns each step before work begins, so your team can tell verified closure from an issue that still needs an owner or a decision.</p>
+        </header>
+        <FindingFlow />
+        <ul className="gapproof">{GAP_PROOF.map((p, k) => (<li key={p.t} className="gapproof__card tilt reveal" data-tilt="6" style={{ "--i": k }}><Tile icon={p.icon} /><p className="gapproof__k">{p.k}</p><h3>{p.t}</h3><p>{p.d}</p></li>))}</ul>
+        <div className="whystrip reveal">
+          <div className="whystrip__head"><Emblem kind="vpilot" size={30} /><div><p className="eyebrow">Why V Pilot?</p><h3>Someone has to run the work, and prove it.</h3></div></div>
+          <ul>{WHY_REASONS.slice(0, 3).map((w) => (<li key={w.t}><Icon name={w.icon} size={18} /><span><b>{w.t}</b>{w.d}</span></li>))}</ul>
+          <Link className="textlink" to="/company#why">More about V Pilot <Icon name="arrow" size={15} /></Link>
         </div>
       </div>
     </section>
-    <section className="vp-section vp-tint" id="why-v-pilot" aria-labelledby="vp-why-title"><div className="vp-shell">
-      <Heading id="vp-why-title" eyebrow="Why V Pilot" title="Know what is controlled, what changed and what can recover.">Reduce avoidable complexity without weakening controls or recovery readiness. Give every agreed control an owner and define how its operation will be verified.</Heading>
-      <Cards items={[[UsersRound,"Know who owns the work","See who operates the control, who approves the change and who handles escalation."],[FileCheck2,"Verify corrective action","Review whether the finding closed, the service stayed healthy and any exception needs action."],[RotateCcw,"Test service recovery","See what was restored, which dependencies were tested and which gaps remain."]]} />
-    </div></section>
-    <section className="vp-section" id="how-we-operate" aria-labelledby="vp-operation-title"><div className="vp-shell">
-      <Heading id="vp-operation-title" eyebrow="How we operate" title="Delegate delivery. Retain decision rights." />
-      <Cards items={roles} />
-      <p className="vp-note" id="continuous-operations">We agree scope, baselines, authority, escalation and recovery requirements before operating. <strong>ProdSecOps</strong> guides infrastructure security. <strong>ProdSecApps</strong> guides application governance from acquisition and design through release, operation and retirement.</p>
-    </div></section>
-    <section className="vp-section vp-dark" id="pudica-autonomy" aria-labelledby="vp-platform-title"><div className="vp-shell">
-      <Heading id="vp-platform-title" eyebrow="Flagship SaaS platform" title="PUDICA Autonomy"><strong>Context Before Action. Confidence After Recovery.</strong> PUDICA Autonomy is V Pilot’s AI-assisted, policy-governed security orchestration platform. It connects evidence from supported tools to isolated validation, customer-approved action and production verification. Autonomous Remediations is one capability within that platform.</Heading>
-      <div className="vp-platform-overview" aria-labelledby="vp-capability-title">
-        <h3 id="vp-capability-title" className="vp-flow-heading">Platform capabilities and decision evidence</h3>
-        <Cards items={capabilities} className="vp-grid--two vp-capabilities" evidenceLabel="Example evidence" />
-        <dl className="vp-platform-controls" aria-label="Platform controls">
-          {platformControls.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}
-        </dl>
+  );
+}
+/* HOME · How responsibility works (animated three-lane model) */
+function Handoff({ id, step }) {
+  const labels = HANDOFFS[id];
+  const live = step.conn === id ? step.dir : null;
+  return (<div className={`hand hand--${id}`}>{["fwd", "back"].map((d) => (<div key={d} className={`hand__arrow hand__arrow--${d} ${live === d ? "is-on" : ""}`}><span className="hand__label">{labels[d]}</span><span className="hand__line" aria-hidden="true"><i /></span></div>))}</div>);
+}
+function OperatingLanes() {
+  const { i, setI, bind } = useSequence(LANE_STEPS.length, LANE_DELAYS);
+  const step = LANE_STEPS[i];
+  return (
+    <div className="lanes" id="authority" {...bind}>
+      <div className="lanes__row">
+        {LANES.map((l, k) => (
+          <Fragment key={l.key}>
+            <article className={`lane lane--${l.key} ${step.lanes.includes(k) ? "is-active" : ""}`}>
+              <span className="lane__step" aria-hidden="true">{k + 1}</span>
+              <header><Tile icon={l.icon} emblem={l.emblem} /><div><p className="lane__who">{l.who}</p><p className="lane__verb">{l.verb}</p></div></header>
+              <p>{l.text}</p>
+              <ul className="lane__tags">{l.tags.map((t) => (<li key={t}>{t}</li>))}</ul>
+              <p className="lane__out"><span>Output</span>{l.out}</p>
+              {l.note && <p className="lane__note">{l.note}</p>}
+            </article>
+            {k < LANES.length - 1 && <Handoff id={k === 0 ? "a" : "b"} step={step} />}
+          </Fragment>
+        ))}
       </div>
-      <h3 className="vp-flow-heading">How evidence becomes an authorised action</h3>
-      <ol className="vp-flow" aria-label="Shared PUDICA lifecycle">{lifecycle.map(([Icon,title,copy],i) => <li key={title}><span className="vp-step" aria-hidden="true">{String(i+1).padStart(2,"0")}</span><Icon aria-hidden="true" /><h4>{title}</h4><p>{copy}</p></li>)}</ol>
-      <p className="vp-note">Scope and integration support are agreed during onboarding. SecLabs does not replace required staging, performance testing or enterprise recovery exercises.</p>
-      <div className="vp-actions"><Action to="/platform" variant="outline">Explore platform architecture</Action><a className="vp-button is-text" href={signIn}>Sign in to PUDICA <span className="vp-domain">pudica.io</span><ArrowRight aria-hidden="true" /></a></div>
-    </div></section>
-    <section id="decision-evidence" className="vp-section vp-tint" aria-labelledby="vp-evidence-title"><div className="vp-shell vp-split">
-      <Heading id="vp-evidence-title" eyebrow="A remediation example" title="See the evidence behind a security decision.">A gateway update shows what the change approver needs to see before release and what the operator must verify in production. This is an illustrative record, not a customer result.</Heading>
-      <figure className="vp-record"><figcaption>Illustrative change decision record</figcaption><dl>{decision.map(([label,copy]) => <div key={label}><dt>{label}</dt><dd>{copy}</dd></div>)}</dl></figure>
-    </div></section>
-    <section className="vp-section" id="services" aria-labelledby="vp-services-title"><div className="vp-shell">
-      <Heading id="vp-services-title" eyebrow="Operational services" title="Cybersecurity operations with defined deliverables">Commission a specific service or combine ongoing operations under one agreement. Define the systems in scope, service levels, change authority and what counts as completion.</Heading>
-      <Cards items={services} /><div className="vp-actions"><Action to="/services" variant="outline">Explore all services</Action></div>
-    </div></section>
-    <section className="vp-section vp-tint" id="executive-governance" aria-labelledby="vp-governance-title"><div className="vp-shell">
-      <Heading id="vp-governance-title" eyebrow="Executive Governance, Privacy & Assurance" title="Give leadership a clear basis for risk decisions.">Connect control evidence to management review: which risks exceed tolerance, who owns treatment and what leadership needs to decide.</Heading>
-      <Cards items={governance} className="vp-grid--two" /><p className="vp-note">Readiness support does not confer certification. Independent audit and certification decisions remain separate. Any formal DPO appointment is separately scoped.</p>
-    </div></section>
-    <section className="vp-section" id="nativetrust" aria-labelledby="vp-workspace-title"><div className="vp-shell">
-      <Heading id="vp-workspace-title" eyebrow="NativeTrust Managed Workspace" title="Remote IT and security for the complete workspace.">NativeTrust brings cloud-first workspace support and security operations together for small and mid-sized businesses. We remotely manage people’s access, devices, approved apps and essential infrastructure under agreed Zero Trust policies.</Heading>
-      <Cards items={workspace} className="vp-grid--two" /><div className="vp-actions"><Action to="/solutions/nativetrust-workspace" variant="outline">Explore NativeTrust Managed Workspace</Action></div>
-    </div></section>
-    <section className="vp-section vp-tint" id="engagement-options" aria-labelledby="vp-engagement-title"><div className="vp-shell">
-      <Heading id="vp-engagement-title" eyebrow="Ways to engage" title="Choose the right level of operational responsibility." /><Cards items={engagements} />
-    </div></section>
-    <section className="vp-section vp-dark vp-close" aria-labelledby="vp-final-title"><div className="vp-shell vp-split">
-      <Heading id="vp-final-title" eyebrow="Executive briefing" title="Define the operating scope in an executive briefing.">Bring a control gap, planned migration or recovery priority. We’ll discuss scope, escalation, decision rights and the evidence you need to judge progress.</Heading>
-      <div className="vp-actions"><Action to={briefing}>Book an executive briefing</Action><Action to={scope("autonomy")} variant="outline">Assess PUDICA readiness</Action></div>
-    </div></section>
-  </main>;
+      <div className="lanes__cap"><ol aria-label="Handoff sequence">{LANE_STEPS.map((s, k) => (<li key={k}><button type="button" className={k === i ? "is-on" : k < i ? "is-past" : ""} aria-label={`Step ${k + 1}: ${s.t}`} aria-pressed={k === i} onClick={() => setI(k)} /></li>))}</ol><p><b>{i + 1}.</b> {step.t}</p></div>
+    </div>
+  );
 }
