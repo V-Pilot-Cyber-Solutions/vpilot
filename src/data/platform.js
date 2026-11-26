@@ -2,13 +2,16 @@ import { asset } from "../lib/config";
 import { Link } from "../lib/router";
 
 export const DEPLOY_CARDS = [
-  { icon: "cloud", t: "Platform", d: "PUDICA Autonomy is delivered as a SaaS platform. Customer-hosted requirements are discussed during scoping and agreed individually. They are not a separate self-managed edition." },
-  { icon: "flask", t: "Test bed", d: "Eligible validation takes place in a test bed your organisation owns, informed by the SecLabs Knowledge Center. Test-bed ownership does not make the platform customer-hosted." },
-  { icon: "users", t: "Who operates", d: "The platform subscription is separate from Co-Managed or Fully Managed Operations. The agreement confirms who is responsible for configuration, policies, monitoring and escalation." },
+  { icon: "cloud", t: "Platform hosting", d: "PUDICA Autonomy is delivered as SaaS. Customer-hosted requirements are discussed during scoping and agreed individually." },
+  { icon: "flask", t: "Validation environment", d: "Eligible validation uses a customer-owned test bed, informed by the SecLabs Knowledge Center. Test-bed ownership does not make the platform customer-hosted." },
+  { icon: "layers", t: "Test-bed provisioning", d: "Who provisions and maintains the test bed is confirmed during scoping." },
+  { icon: "users", t: "Workflow operation", d: "The operating agreement names who runs the workflows: your team, your team with V Pilot Remote Support, or V Pilot under Co-Managed or Fully Managed Operations." },
 ];
-export const READINESS_ENV = [
-  { env: "Cloud-managed estate", window: "About one month", note: "For an eligible, well-bounded cloud-only scope.", does: "Establish access, device inventory, policies, service desk, baseline reporting and escalation. Enable selected workflows as they pass readiness checks." },
-  { env: "Complex hybrid infrastructure", window: "Up to six months", note: "Planning window, confirmed after discovery.", does: "Provide PUDICA platform access plus extensive virtual management support as agreed. V Pilot operates the available scope, maps dependencies, builds the ARP and validates candidate workflows in stages." },
+export const MILESTONES = [
+  { icon: "cloud", t: "Platform activation", d: "Your PUDICA SaaS workspace is set up. Activation is not production readiness." },
+  { icon: "nodes", t: "Environment connection", d: "Connect a supported environment and agree access and baseline policies." },
+  { icon: "flask", t: "Workflow validation", d: "Validate the first eligible workflow in your customer-owned test bed." },
+  { icon: "gate", t: "Authorisation for production use", d: "Your authorised owners approve production use within agreed policy.", gate: true },
 ];
 /* ==========================================================================
    PUDICA Autonomy
@@ -34,7 +37,7 @@ export const WORKSTREAMS = [
     uses: ["Gateway update: associate the approved change with its GoldenVault version and test compatibility and rollback.", "Deferred package fix: link the open exposure to compensating controls and an exception review."] },
   { icon: "search", name: "SIEM & Detection Operations", home: "Verify that expected telemetry reaches the right responder, with asset and risk context. Keep monitoring linked to unresolved exposures and time-bound exceptions.",
     buyer: "Whether expected telemetry, detection behaviour and escalation work for the deployed environment and its open risks.",
-    promise: "Make monitoring reflect what is actually deployed, what matters to the business and what risks remain open, using supported SIEM environments such as Splunk or Microsoft Sentinel where scoped.",
+    promise: "Make monitoring reflect what is actually deployed, what matters to the business and what risks remain open, using supported SIEM environments where scoped.",
     evidence: "Detection test, telemetry coverage, escalation route and monitoring tied to an open exception.",
     uses: ["New log source: validate signal receipt and routing with controlled test telemetry.", "Exception monitoring: link an open risk to a detection and review both when the exception expires."] },
   { icon: "restore", name: "Autonomous Resilience", home: "Reconstruct relevant configurations, exercise separately scoped data restoration, and record which services and dependencies have demonstrated recoverability.",
@@ -47,16 +50,10 @@ export const WORKSTREAMS = [
     promise: "Prepare and exercise response playbooks against representative defensive scenarios, then coordinate approved actions when production signals match the validated conditions. Unfamiliar or materially disruptive cases go to the designated incident lead.",
     evidence: "Playbook version, exercise results, authority, event timeline and recovery verification.",
     uses: ["Playbook rehearsal: exercise an account-compromise scenario using controlled defensive signals and check escalation.", "Previously validated response: proceed only when production conditions match the approved workflow; otherwise escalate."] },
-  { icon: "laptop", name: "NativeTrust Endpoint", link: ["Open the NativeTrust Endpoint service", "/services/nativetrust-endpoint"],
-    home: "Managed endpoint security for supported desktops, laptops, browsers and approved applications. V Pilot configures and operates agreed Zero Trust controls and reports policy coverage, exceptions and corrective actions.",
-    buyer: "Which devices, browsers and applications are covered, which controls apply to each device group, and where exceptions need a decision. V Pilot's team operates the agreed policies.",
-    promise: "Secure the desktop your people already use. Device posture and identity inform access to approved applications, and managed browser and endpoint policies help govern how people handle customer data. Controls such as download, upload or copy restrictions depend on supported tooling, licensing and agreed scope.",
-    evidence: "Device and browser policy coverage, exceptions with owners and review dates, and corrective actions.",
-    uses: ["Pilot group: apply device compliance and browser policy to a representative group, then confirm people can still complete their daily work.", "Policy exception: route a browser-policy request to the approver, apply the narrowest change and record its expiry."] },
 ];
 export const STAGES = [
   { icon: "database", v: "Acquire", verb: "SenseScan acquires", sys: "SenseScan", short: "Capture authorised configuration evidence and correlate applicable findings.",
-    text: "Authorised Forensic Configuration Acquisition captures evidence against applicable CIS Benchmarks or customer-defined controls, organised across the Six-Layer Technical Taxonomy. Findings from tools such as Tenable or Qualys are linked to the asset, component and configuration version. This is configuration evidence, not incident forensic collection.",
+    text: "Authorised Forensic Configuration Acquisition captures evidence against applicable CIS Benchmarks or customer-defined controls, organised across the Six-Layer Technical Taxonomy. Supported scanner findings are linked to the asset, component and configuration version. This is configuration evidence, not incident forensic collection.",
     items: ["Authorised configuration", "Supported scanner findings", "Supported SIEM telemetry", "Six-layer taxonomy"] },
   { icon: "layers", v: "Version", verb: "GoldenVault versions the observed state", sys: "GoldenVault", short: "Keep the observed state separate from the approved baseline.",
     text: "Store Compliance as Backup Code (CaBC) as a versioned configuration package or GoldenVault image. Keep the observed state separate from the approved baseline: a captured system may contain drift, and versioning it does not approve it. GoldenVault preserves configuration and reconstruction knowledge. It does not back up business data by default.",
@@ -72,6 +69,23 @@ export const STAGES = [
     items: ["Service health", "Control effect", "Expected telemetry", "Escalate or roll back"] },
 ];
 export const STAGE_DELAYS = [1800, 1800, 2800, 3800, 3000];
+export const GOLDENVAULT_ROWS = [
+  ["Golden images", "Approved operating-system and platform images by version and use case."],
+  ["Configuration state", "Versioned identity, endpoint, network, database, middleware, cloud and application settings."],
+  ["Security baselines", "CIS Benchmarks, organizational standards, accepted deviations and evidence."],
+  ["Remediation knowledge", "Validated patch, configuration, code and compensating-control procedures."],
+  ["Rollback and recovery", "Rollback instructions, backup dependencies, reconstruction and recovery blueprints."],
+  ["Historical evidence", "Prior tests, failures, exceptions, approvals, telemetry and production outcomes."],
+];
+export const VALIDATION_ROWS = [
+  ["Vulnerability validation", "Assess applicability, exposure and dependencies from authorized configuration evidence and scanner findings."],
+  ["Remediation testing", "Test patches, configuration changes, code corrections and compensating controls."],
+  ["Detection assurance", "Generate controlled telemetry and verify SIEM, EDR and control response."],
+  ["Application assurance", "Test APIs, dependencies, runtime configuration and release gates."],
+  ["Rollback validation", "Confirm that disruptive or failed change can be reversed safely."],
+  ["Recovery proving", "Test restoration, reconstruction, dependencies, service health, RTO and RPO."],
+  ["Evidence generation", "Preserve before and after state, telemetry, decisions, approvals and outcomes."],
+];
 export const ACR_LINKS = [
   { icon: "layers", t: "GoldenVault version", d: "The named observed state the change is built from." }, { icon: "clipboard", t: "Validation criteria", d: "Expected outcome, acceptance and compatibility checks." },
   { icon: "search", t: "Detection evidence", d: "The telemetry and alerts that should appear after change." }, { icon: "restore", t: "Recovery requirements", d: "Rollback or restoration that must be shown to work." },
@@ -82,7 +96,14 @@ const RESILIENCE_PILLARS = [
   { t: "Prove service recovery", d: "Restoration exercises and dependency checks show the service can return." },
 ];
 export const LAYERS = ["OSE Kernel", "Services and Middleware", "Database", "EMS (Enterprise Managed Layer)", "Network", "Standalone Software Packages"];
-export const AUTONOMY = [{ a: "A0", n: "Observe" }, { a: "A1", n: "Recommend" }, { a: "A2", n: "Prepare" }, { a: "A3", n: "Human-approved execution" }, { a: "A4", n: "Policy-governed execution" }, { a: "A5", n: "Governed closed loop" }];
+export const AUTONOMY = [
+  { a: "A0", n: "Observe", d: "Observe the workflow and baseline the evidence. No action is taken." },
+  { a: "A1", n: "Recommend", d: "Recommend a treatment. A person decides and acts." },
+  { a: "A2", n: "Prepare", d: "Prepare the change, validation and rollback for approval." },
+  { a: "A3", n: "Human-approved execution", d: "A named approver authorises each run, and production results are verified." },
+  { a: "A4", n: "Policy-Governed Execution", d: "Eligible actions run within customer-approved policy. Exceptions go to a named owner, and production results are verified." },
+  { a: "A5", n: "Governed closed loop", d: "Eligible workflows complete the loop within approved policy, with human override and recovery readiness preserved." },
+];
 export const ADOPTION = [
   { icon: "eye", t: "Observe & baseline", d: "Understand the environment." }, { icon: "refresh", t: "Understand risk", d: "Analyse exposure and dependencies." },
   { icon: "flask", t: "Recommend & validate", d: "Test and prove in a controlled scope." },
@@ -100,10 +121,6 @@ export const SUMMARY_FIELDS = [
   ["Priority exposure", "Remote-access gateway configuration drift"], ["Service affected", "Remote workforce access"], ["Treatment owner", "Named infrastructure owner"],
   ["Due date", "Set by the change approver"], ["Prior approval", "Approval history linked to the originating work"], ["Recovery evidence", "Restore or rollback test result"], ["Next decision", "Exception review with expiry date"],
 ];
-export const FW = {
-  ops: { name: "PROD SEC OPS", short: "ProdSecOps", m1: "#1c7be0", m2: "#74e9ef", words: ["Analyze", "Prove", "Govern", "Operate", "Recover", "Assure"] },
-  apps: { name: "PROD SEC APPS", short: "ProdSecApps", m1: "#6d4cff", m2: "#e08bff", words: ["Design", "Build", "Test", "Release", "Operate", "Retire"] },
-};
 /* ==========================================================================
    PUDICA + OPERATING MODEL + OTHER PAGES
    ========================================================================== */

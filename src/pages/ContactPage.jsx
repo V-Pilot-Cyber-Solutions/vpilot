@@ -48,8 +48,8 @@ function BriefingForm() {
       setState("draft");
     }
   };
-  if (state === "sent") return (<div className="brief__done" role="status"><Icon name="check" size={28} /><p>We received your request. We will use the details you provided to route it to the appropriate team.</p></div>);
-  if (state === "draft") return (<div className="brief__done" role="status"><Icon name="mail" size={28} /><p>We opened an email draft addressed to {CONTACT_EMAIL}. Your request is not submitted until you send it from your email app. If no draft opened, write to {CONTACT_EMAIL} directly.</p></div>);
+  if (state === "sent") return (<div className="brief__done" role="status"><Icon name="check" size={28} /><p>Your enquiry has been submitted. We will use the details you provided to route it to the appropriate team.</p></div>);
+  if (state === "draft") return (<div className="brief__done" role="status"><Icon name="mail" size={28} /><p>Your email draft opened. Send it to complete your enquiry. If no draft opened, write to {CONTACT_EMAIL} directly.</p></div>);
   return (
     <form className="form" onSubmit={submit} noValidate>
       <div className="form__row"><label>Work email<input type="email" autoComplete="email" value={form.email} onChange={set("email")} aria-invalid={!!errors.email} />{errors.email && <em>{errors.email}</em>}</label><label>Organisation<input type="text" autoComplete="organization" value={form.org} onChange={set("org")} aria-invalid={!!errors.org} />{errors.org && <em>{errors.org}</em>}</label></div>
@@ -57,7 +57,7 @@ function BriefingForm() {
       <div className="form__row"><label>Your environment<select value={form.env} onChange={set("env")}>{ENVIRONMENTS.map((x) => (<option key={x}>{x}</option>))}</select></label><label>How would you like to work with us?<select value={form.model} onChange={set("model")}>{ENGAGEMENT_CHOICES.map((x) => (<option key={x}>{x}</option>))}</select></label></div>
       <label>Control gap, planned migration or recovery priority<textarea rows="4" value={form.priority} onChange={set("priority")} aria-invalid={!!errors.priority} placeholder="What would you like V Pilot to run, and what would your team still approve?" />{errors.priority && <em>{errors.priority}</em>}</label>
       {state === "error" && <p className="form__err" role="alert">We could not send your request. Please try again.</p>}
-      <div className="form__foot"><button className="btn btn--solid" type="submit" disabled={state === "sending"}><span>{state === "sending" ? "Sending…" : "Prepare my briefing request"}</span><Icon name="arrow" size={16} /></button>
+      <div className="form__foot"><button className="btn btn--solid" type="submit" disabled={state === "sending"}><span>{state === "sending" ? "Sending…" : FORM_ENDPOINT ? "Submit enquiry" : "Open Email Draft"}</span><Icon name="arrow" size={16} /></button>
         <p className="hint">Privacy: we use these details only to respond to your request. <Link to="/privacy">Privacy information</Link>. Please do not upload sensitive files or send active incident evidence.</p></div>
     </form>
   );
@@ -85,7 +85,7 @@ export function ContactPage() {
       <section id="briefing-form" className="band band--cloud" aria-labelledby="contact-title"><div className="wrap brief">
         <div className="brief__copy reveal">
           <h2 id="contact-title">Tell us the business priority.</h2>
-          <p>We use the details you provide to route your request to the appropriate team. Business enquiries are acknowledged during Indian business hours.</p>
+          <p>We use the details you provide to route your request to the appropriate team.</p>
           <ol className="nsteps--mini">{CONTACT_STEPS.map((s, k) => (<li key={s.t}><span>{k + 1}</span><div><b>{s.t}</b><p>{s.d}</p></div></li>))}</ol>
           <h3 className="brief__h">What to bring</h3><ul className="brief__bring">{CONTACT_BRING.map((b) => (<li key={b}><Icon name="check" size={16} />{b}</li>))}</ul>
         </div>
@@ -96,7 +96,7 @@ export function ContactPage() {
           <div className="hq__row"><Icon name="pin" size={20} /><p>{ADDRESS.slice(1).map((l, k) => (<Fragment key={l}>{k > 0 && <br />}{l}</Fragment>))}</p></div>
           <div className="hq__row"><Icon name="mail" size={20} /><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></div>
           <div className="hq__row"><Icon name="phone" size={20} /><a href={PHONE_HREF}>{PHONE}</a></div>
-          <div className="hq__row"><Icon name="clock" size={20} /><p>Business enquiries are acknowledged during Indian business hours.</p></div>
+          <div className="hq__row"><Icon name="clock" size={20} /><p>Existing customers with an active incident should use their contracted escalation channel.</p></div>
           <div className="hq__links"><a className="textlink" href={MAP_LINK} target="_blank" rel="noopener noreferrer">Get directions <Icon name="external" size={14} /></a><Link className="textlink" to="/support">Customer support <Icon name="arrow" size={14} /></Link></div></article>
           <div className="reveal" style={{ "--i": 1 }}><MapCard /></div></div></div></section>
       <section className="vsp-trust" aria-labelledby="before-title"><div className="wrap vsp-trust__in"><div><p className="eyebrow">Before you send</p><h2 id="before-title">Keep sensitive details out of general enquiries.</h2><p>Do not submit passwords, secrets, vulnerability proof, customer data or regulated personal data through general email or this form. Use the Security Disclosure route for suspected vulnerabilities and the customer support route for contracted incidents.</p></div><div className="vsp-trust__btns"><Btn to="/security-disclosure" variant="cyan">Security Disclosure</Btn><Btn to="/support" variant="ghost">Customer Support</Btn></div></div></section>

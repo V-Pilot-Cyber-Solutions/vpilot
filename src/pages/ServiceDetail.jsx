@@ -1,14 +1,14 @@
-/* PAGE: Every service page (/services/:slug), including NativeTrust Endpoint and GRC as a Service
+/* PAGE: Every service page (/services/:slug), including NativeTrust Endpoint and the GRC as a Service category
    Styles: styles/service-detail.css
    Content: data/services.js (SERVICES, NT_ENDPOINT) */
 import "../styles/service-detail.css";
 import { CtaBand } from "../components/CtaBand";
 import { Icon } from "../components/Icon";
 import { PageHero } from "../components/PageHero";
-import { IndependencePanel, RelatedManaged, ServiceCard, briefLink } from "../components/ServiceCards";
+import { IndependencePanel, ServiceCard, briefLink } from "../components/ServiceCards";
 import { AnchorBtn, Btn, SectionHead } from "../components/atoms";
 import { Emblem, FrameworkMark, Tile } from "../components/brand";
-import { SampleRecord, ThreeCols, UseCases } from "../components/detail";
+import { CheckList, FlowChain, KeyCall, ParaGrid, SampleRecord, SpecTable, ThreeCols, UseCases } from "../components/detail";
 import { GRC_AREAS, bySlug } from "../data/services";
 import { Link, contactTo } from "../lib/router";
 import { Hero } from "./HomePage";
@@ -43,6 +43,16 @@ export function ServiceDetail({ item }) {
         <article className="dwide reveal"><Tile icon={item.icon} /><p>{item.delivers}</p></article>
         {briefs.length > 0 && (<div className="briefs"><p className="eyebrow reveal">Choose the brief that matches your need</p><ul>{briefs.map((b, k) => (<li key={b.slug} className="bfcard tilt reveal" data-tilt="5" style={{ "--i": k }}><Tile icon={b.icon} /><h3>{b.name}</h3><p className="bfcard__h">{b.headline}</p><p>{b.blurb}</p><Link className="textlink" to={briefLink(b.slug)}>Explore this brief <Icon name="arrow" size={15} /></Link></li>))}</ul></div>)}
         {item.pudica && (<aside className="pcall reveal"><Emblem kind="pudica" size={34} /><p>{item.pudica}</p></aside>)}
+          {(item.flow || item.tables || item.bullets || item.paras || item.callouts) && (
+            <div id="how-it-runs" className="run">
+              <SectionHead eyebrow={item.runEyebrow || "How the work runs"} title={item.runTitle || "From request to verified closure."} id="d-run" lead={item.runLead} />
+              {item.flow && <FlowChain items={item.flow} />}
+              {item.bullets && <CheckList title={item.bulletsTitle} items={item.bullets} />}
+              {item.paras && <ParaGrid items={item.paras} />}
+              {(item.tables || []).map((t) => (<SpecTable key={t.title} {...t} />))}
+              {(item.callouts || []).map((c) => (<KeyCall key={c.k} label={c.k} text={c.t} />))}
+            </div>
+          )}
       </div></section>
 
       <section className="band" aria-labelledby="d-how"><div className="wrap">
@@ -56,9 +66,9 @@ export function ServiceDetail({ item }) {
       </div></section>
 
       {item.umbrella && (<section className="band" aria-labelledby="d-areas"><div className="wrap">
-        <SectionHead eyebrow="Specialist governance scopes" title="Commission them with GRC as a Service, or on their own." id="d-areas" lead="GRC as a Service itself produces the executive brief, security roadmap and decision log. These three specialist scopes can be added by need." />
+        <SectionHead eyebrow="The three packages" title="Commission any package independently, or combine them." id="d-areas" lead="Each package names its owners, evidence and decisions. Combine them under one review cadence so leadership sees readiness, risk and privacy in the same forum." />
         <ul className="cards">{GRC_AREAS.map((s, k) => (<ServiceCard key={s.slug} s={s} i={k} />))}</ul>
-        <div className="gov2"><IndependencePanel /><RelatedManaged /></div>
+        <div className="gov2"><IndependencePanel /></div>
       </div></section>)}
       {item.perspectives && (<section className="band" aria-labelledby="d-persp"><div className="wrap">
         <SectionHead eyebrow="One capability, four perspectives" title="Described from each buyer's point of view." id="d-persp" lead="Identity operations appear in several places. It is one capability seen from different buyer perspectives, not duplicate offers." />

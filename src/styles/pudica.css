@@ -1,4 +1,4 @@
-/* PUDICA Autonomy page: on-this-page bar and section anchors. */
+/* PUDICA Autonomy page and the on-this-page bar. */
 .onpage { position: sticky; top: 76px; z-index: 90; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); box-shadow: 0 10px 24px -20px rgba(6, 26, 46, 0.5); }
 .onpage__in { display: flex; align-items: center; gap: 20px; overflow-x: auto; scrollbar-width: none; }
 .onpage__in::-webkit-scrollbar { display: none; }
@@ -30,3 +30,4 @@
 @media (max-width: 1360px) {
   .onpage__k { display: none; }
 }
+#goldenvault-test-bed { scroll-margin-top: 40px; }

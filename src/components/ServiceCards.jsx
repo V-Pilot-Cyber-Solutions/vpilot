@@ -1,6 +1,5 @@
 import { Icon } from "./Icon";
 import { Btn, SectionHead } from "./atoms";
-import { Tile } from "./brand";
 import { CARD_ORDER, GROUPS, GROUP_ANCHOR, GROUP_INTRO, byGroup, bySlug } from "../data/services";
 import { Link } from "../lib/router";
 
@@ -27,15 +26,6 @@ export function IndependencePanel() {
       <p className="indep__k"><Icon name="shield" size={16} /> Independence</p>
       <h3>V Pilot supports readiness, control operation, evidence and corrective action.</h3>
       <p>Independent certification, attestation and formal audit conclusions remain separate. GRC as a Service coordinates evidence and priorities; it does not own a formal DPO's independent judgement, award certification or make an assessor's conclusions. Customer leadership retains risk acceptance.</p>
-    </aside>
-  );
-}
-export function RelatedManaged() {
-  return (
-    <aside className="relman reveal" aria-label="Related managed service">
-      <Tile icon="key" sm size={22} />
-      <div><p className="relman__k">Related managed service</p><h3>Managed Identity & Access Operations</h3><p>Can be added where identity administration is required. It is an operational service, not an independent review or a default inclusion in GRC as a Service.</p></div>
-      <Link className="textlink" to="/services/managed-iam-operations">Explore the service <Icon name="arrow" size={15} /></Link>
     </aside>
   );
 }

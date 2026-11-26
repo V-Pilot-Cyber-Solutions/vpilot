@@ -1,6 +1,6 @@
 /* PAGE: Solutions overview (/products)
    Styles: styles/products.css
-   Content: data/solutions.js */
+   Content: data/solutions.js, data/home.js (BUY_PATHS) */
 import "../styles/products.css";
 import { CtaBand } from "../components/CtaBand";
 import { Icon } from "../components/Icon";
@@ -18,7 +18,7 @@ import { Link, contactTo } from "../lib/router";
    NATIVETRUST MANAGED WORKSPACE (solution page)
    ========================================================================== */
 /* ==========================================================================
-   SOLUTIONS and operating-model comparison
+   PRODUCT: overview and operating-model comparison
    ========================================================================== */
 export function ProductsPage() {
   return (
@@ -37,7 +37,7 @@ export function ProductsPage() {
           </li>))}</ul>
       </div></section>
       <section id="capabilities" className="band band--cloud" aria-labelledby="cap-h"><div className="wrap">
-        <SectionHead eyebrow="Capabilities" title="Integrated Security Operations Management." id="cap-h" lead="Six workstreams, with evidence linked to the work. Each link goes to a visible section of the PUDICA page or to the NativeTrust Endpoint service." />
+        <SectionHead eyebrow="Capabilities" title="Integrated Security Operations Management." id="cap-h" lead="Five workstreams with a shared evidence record. Each link goes to a visible section of the PUDICA page." />
         <div className="capgroups">{PRODUCT_CAPS.map((g, k) => (
           <article key={g.title} className="capgroup tilt reveal" data-tilt="4" style={{ "--i": k }}>
             <h3><Icon name={g.icon} size={20} />{g.title}</h3>

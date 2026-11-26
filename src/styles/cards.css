@@ -1,4 +1,4 @@
-/* Shared card system: service cards, solution cards, points and the highlighted-card surface. */
+/* Shared card system, including delivery-option and four-question cards. */
 .card__cta svg { transition: transform 0.25s var(--ease); }
 .card__cta:hover svg { transform: translateX(4px); }
 .delivery { display: grid; gap: 10px; margin-top: 26px; padding: 20px 24px; font-size: 15.5px; }
@@ -61,3 +61,21 @@
   .point { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
 }
 .cards--2 .card h3 { margin-bottom: 8px; }
+.dchoices { margin-bottom: 8px; }
+.dchoices .card__scope b { color: var(--ink); }
+.fourq { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.fourq__card { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 20px 20px 18px; font-size: 14.5px; background: var(--card-bg); border: 1px solid var(--card-edge); border-radius: var(--radius); box-shadow: var(--card-shadow); transition: box-shadow 0.4s var(--ease), border-color 0.4s; }
+.fourq__card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; border-radius: var(--radius) var(--radius) 0 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); transform: scaleX(0.22); transform-origin: left; opacity: 0.75; transition: transform 0.55s var(--ease); pointer-events: none; }
+.fourq__card:hover { border-color: #9cc4e0; box-shadow: inset 0 1px 0 #fff, 0 24px 40px -24px rgba(7, 92, 150, 0.55); }
+.fourq__card:hover::before { transform: scaleX(1); }
+.fourq__n { display: grid; place-items: center; width: 28px; height: 28px; margin-bottom: 4px; border-radius: 50%; background: var(--blue); color: #fff; font: 700 13px var(--font-display); }
+.fourq__card b { font-family: var(--font-display); font-size: 17px; color: var(--ink); line-height: 1.25; }
+@media (max-width: 1100px) {
+  .fourq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .fourq { grid-template-columns: 1fr; }
+}
+@media print {
+  .fourq__card { break-inside: avoid; background: #fff !important; box-shadow: none !important; border: 1px solid #999 !important; }
+}

@@ -1,4 +1,4 @@
-/* Company page. */
+/* Company and company profile pages. */
 .why .e3d__glow { background: radial-gradient(circle, rgba(7, 130, 210, 0.25), transparent 62%); }
 .why .e3d__ring { border-color: rgba(7, 92, 150, 0.35); box-shadow: none; }
 .why .e3d__floor { background: radial-gradient(ellipse, rgba(6, 26, 46, 0.3), transparent 70%); }
@@ -57,3 +57,9 @@
   .compare__col { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
   .proof__n { -webkit-text-fill-color: #000 !important; background: none !important; }
 }
+#profile-view,
+#profile-direction,
+#profile-problem,
+#profile-model,
+#profile-ecosystem,
+#profile-assurance { scroll-margin-top: 40px; }

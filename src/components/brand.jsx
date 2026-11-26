@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "./Icon";
-import { FW } from "../data/platform";
+import { FW } from "../data/frameworks";
 import { useInView, useReducedMotion, useTabVisible } from "../hooks/index";
 import { asset } from "../lib/config";
 

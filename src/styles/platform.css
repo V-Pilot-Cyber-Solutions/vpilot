@@ -1,4 +1,4 @@
-/* Platform components shared by Home and PUDICA Autonomy: step rails, validation architecture, workstreams, ladder, records. */
+/* Platform components shared by Home and PUDICA Autonomy: step rails, validation architecture, workstreams, autonomy ladder, records. */
 .pudica h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); font-weight: 700; letter-spacing: -0.025em; margin-top: 14px; }
 .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px 4px 8px; border-radius: 999px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; line-height: 1.2; border: 1px solid transparent; }
 .status--verified { color: var(--teal); background: rgba(0, 126, 118, 0.1); border-color: rgba(0, 126, 118, 0.35); }
@@ -345,12 +345,23 @@
 .evstrip { background: linear-gradient(110deg, #0f4170 0%, #08213b 100%); border: 1.5px dashed rgba(116, 233, 239, 0.6); box-shadow: 0 22px 40px -26px rgba(6, 26, 46, 0.7); }
 .evstrip h3 { color: #fff; }
 .evstrip p { color: #d4e5f2; }
+.wsx__panel .inline-links a { color: var(--cyan); }
+.ladderwrap { display: grid; gap: 14px; }
+.ladder__detail { padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(116, 233, 239, 0.4); background: rgba(6, 26, 46, 0.6); color: #d4e5f2; font-size: 15px; line-height: 1.55; animation: panelIn 0.45s var(--ease) both; }
+.ladder__detail b { color: var(--cyan); font-family: var(--font-display); }
+.deploy--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  .deploy--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .deploy--4 { grid-template-columns: 1fr; }
+}
 @media print {
   .evstrip,
   .evstrip h3,
-  .evstrip p { background: #fff !important; color: #000 !important; }
+  .evstrip p,
+  .ladder__detail { background: #fff !important; color: #000 !important; }
 }
-.wsx__panel .inline-links a { color: var(--cyan); }
 @keyframes srcpulse { 0%, 100% { background: rgba(255, 255, 255, 0.06); } 10% { background: rgba(116, 233, 239, 0.2); } 20% { background: rgba(255, 255, 255, 0.06); } }
 @keyframes awaiting { 0%, 100% { box-shadow: 0 0 0 0 rgba(246, 189, 96, 0.55); } 50% { box-shadow: 0 0 0 7px rgba(246, 189, 96, 0); } }
 @keyframes loopdot { 0% { right: 0; opacity: 0; } 8%, 92% { opacity: 1; } 100% { right: calc(100% - 9px); opacity: 0; } }

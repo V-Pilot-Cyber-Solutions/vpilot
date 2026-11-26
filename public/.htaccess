@@ -1,58 +1,57 @@
-# V Pilot single-page app on Apache (cPanel / shared FTP hosting).
-# Place this file in  vpilot-site/public/  so "npm run build" copies it into dist/, then upload dist/ to public_html.
-# For a sub-folder install, see the notes at the bottom.
-
+# Apache (cPanel / shared FTP hosting). "npm run build" copies this file into dist/; upload the CONTENTS of dist/ (including this hidden file).
+# Unknown URLs return a real 404 status and the site's own 404 page. Known routes are served by the app.
+# When you add a page, add its path to the whitelist rule below (and to sitemap.xml).
 Options -MultiViews
 DirectoryIndex index.html
+ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # 1) Force HTTPS. Uncomment once the SSL certificate is active.
+  # Force HTTPS: uncomment once the SSL certificate is active.
   # RewriteCond %{HTTPS} off
   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # 2) Legacy URLs (real 301s; the app also redirects in the browser as a fallback).
-  RewriteRule ^operating-model/?$                      /#operating-model                          [NE,R=301,L]
-  RewriteRule ^how-we-operate/?$                       /#operating-model                          [NE,R=301,L]
-  RewriteRule ^operating-model/frameworks/?$           /resources/frameworks                      [R=301,L]
-  RewriteRule ^operating-model/engagement/?$           /services#how-to-engage                    [NE,R=301,L]
-  RewriteRule ^solutions/?$                            /products#solutions                        [NE,R=301,L]
-  RewriteRule ^solutions/nativetrust-endpoint/?$       /services/nativetrust-endpoint             [R=301,L]
-  RewriteRule ^products/nativetrust(-endpoint)?/?$     /services/nativetrust-endpoint             [R=301,L]
-  RewriteRule ^products/5pilot-cloud/?$                /products/compare                          [R=301,L]
-  RewriteRule ^services/ciso-as-a-service/?$           /services/grc-as-a-service                 [R=301,L]
-  RewriteRule ^pudica-autonomy/architecture/?$         /pudica-autonomy#validation-architecture   [NE,R=301,L]
-  RewriteRule ^pudica-autonomy/readiness/?$            /pudica-autonomy#autonomy-readiness        [NE,R=301,L]
-  RewriteRule ^offers/dpo-onboarding/?$                /contact                                   [R=301,L]
-  RewriteRule ^services/cloud-migrations/?$            /services/secure-cloud-migration           [R=301,L]
-  RewriteRule ^services/siem-detection-operations/?$   /services/managed-detection-siem-operations [R=301,L]
-  RewriteRule ^services/digital-forensics-investigations/?$ /services/digital-forensics-investigation [R=301,L]
-  RewriteRule ^services/backup-recovery-continuity/?$  /services/backup-recovery-assurance        [R=301,L]
-  RewriteRule ^services/dpo-privacy-operations/?$      /services/privacy-operations-dpo-support   [R=301,L]
+  # Legacy URLs (301). The app also redirects in the browser as a fallback.
+  RewriteRule ^operating-model/?$ /#operating-model [NE,R=301,L]
+  RewriteRule ^how-we-operate/?$ /#operating-model [NE,R=301,L]
+  RewriteRule ^operating-model/frameworks/?$ /resources/frameworks [R=301,L]
+  RewriteRule ^operating-model/engagement/?$ /services#how-to-engage [NE,R=301,L]
+  RewriteRule ^solutions/?$ /products#solutions [NE,R=301,L]
+  RewriteRule ^solutions/nativetrust-endpoint/?$ /services/nativetrust-endpoint [R=301,L]
+  RewriteRule ^products/nativetrust(-endpoint)?/?$ /services/nativetrust-endpoint [R=301,L]
+  RewriteRule ^products/5pilot-cloud/?$ /products/compare [R=301,L]
+  RewriteRule ^services/ciso-as-a-service/?$ /services/grc-as-a-service [R=301,L]
+  RewriteRule ^services/managed-iam-operations/?$ /services/managed-identity-it-operations [R=301,L]
+  RewriteRule ^services/vulnerability-configuration-management/?$ /services/vulnerability-compliance-remediation-management [R=301,L]
+  RewriteRule ^services/digital-forensics-investigations?/?$ /services/digital-forensics-training-investigations [R=301,L]
+  RewriteRule ^pudica-autonomy/architecture/?$ /pudica-autonomy#validation-architecture [NE,R=301,L]
+  RewriteRule ^pudica-autonomy/readiness/?$ /pudica-autonomy#autonomy-readiness [NE,R=301,L]
+  RewriteRule ^offers/dpo-onboarding/?$ /services/privacy-operations-dpo-support [R=301,L]
+  RewriteRule ^services/cloud-migrations/?$ /services/secure-cloud-migration [R=301,L]
+  RewriteRule ^services/siem-detection-operations/?$ /services/managed-detection-siem-operations [R=301,L]
+  RewriteRule ^services/backup-recovery-continuity/?$ /services/backup-recovery-assurance [R=301,L]
+  RewriteRule ^services/dpo-privacy-operations/?$ /services/privacy-operations-dpo-support [R=301,L]
   RewriteRule ^services/security-configuration-compliance/?$ /services/security-baselines-configuration-drift [R=301,L]
-  # /solutions/nativetrust and /services/it-infrastructure-security-operations are real pages (scope chooser): the app serves them.
 
-  # 3) Serve real files and folders as they are; send every other path to the app (fixes refresh and direct links).
+  # Real files and folders (assets, sitemap, icons) are served as they are.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
-  RewriteRule . /index.html [L]
+
+  # Known routes load the app (fixes refresh and direct links).
+  RewriteRule ^(?:|accessibility|company|company/careers|company/profile|contact|cookies|legal|managed\-security\-operations|privacy|products|products/compare|pudica\-autonomy|resources|resources/executive\-assurance\-summary|resources/frameworks|resources/sample\-change\-decision|security\-disclosure|services|services/application\-security\-governance|services/backup\-recovery\-assurance|services/certification\-readiness|services/digital\-forensics\-training\-investigations|services/enterprise\-risk\-vendor\-assurance|services/grc\-as\-a\-service|services/incident\-readiness\-response|services/it\-infrastructure\-security\-operations|services/managed\-detection\-siem\-operations|services/managed\-identity\-it\-operations|services/nativetrust\-endpoint|services/privacy\-operations\-dpo\-support|services/secure\-cloud\-migration|services/security\-baselines\-configuration\-drift|services/vulnerability\-compliance\-remediation\-management|services/vulnerability\-remediation|solutions/application\-trust|solutions/incident\-recovery\-readiness|solutions/nativetrust|solutions/secure\-business\-transformation|support|terms)/?$ /index.html [L]
 </IfModule>
 
-# Correct types for files the site uses
 <IfModule mod_mime.c>
   AddType application/manifest+json .webmanifest
   AddType image/svg+xml .svg
   AddType text/javascript .js
 </IfModule>
-
-# Compression
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml
 </IfModule>
-
-# Caching: hashed JS/CSS for a year, images for a month, pages always revalidated
+# Caching: hashed JS/CSS can be cached for a year. HTML is revalidated on every visit.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
@@ -61,19 +60,11 @@ DirectoryIndex index.html
   ExpiresByType image/jpeg "access plus 1 month"
   ExpiresByType image/png "access plus 1 month"
   ExpiresByType image/svg+xml "access plus 1 month"
-  ExpiresByType image/x-icon "access plus 1 month"
   ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
-
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  <FilesMatch "\.(html)$">
-    Header set Cache-Control "no-cache"
-  </FilesMatch>
 </IfModule>
-
-# SUB-FOLDER INSTALL (for example /vpilot/):
-#  - build with:  $env:VITE_BASE="/vpilot/"; npm.cmd run build
-#  - change the fallback line to:  RewriteRule . /vpilot/index.html [L]
-#  - prefix every redirect target above with /vpilot
+# Sub-folder install (for example /vpilot/): build with VITE_BASE=/vpilot/, set ErrorDocument to /vpilot/404.html, change the route rule target to /vpilot/index.html and prefix redirect targets with /vpilot.

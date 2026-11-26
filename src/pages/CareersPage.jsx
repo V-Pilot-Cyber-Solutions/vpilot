@@ -1,6 +1,6 @@
 /* PAGE: Careers and internship challenge (/company/careers)
    Styles: styles/careers.css
-   Content: data/careers.js */
+   Content: data/careers.js; lib/config.js (INTERNSHIP_TERMS_CONFIRMED) */
 import "../styles/careers.css";
 import { useState } from "react";
 import { CtaBand } from "../components/CtaBand";
@@ -9,6 +9,7 @@ import { PageHero } from "../components/PageHero";
 import { AnchorBtn, Btn, SectionHead } from "../components/atoms";
 import { Tile } from "../components/brand";
 import { CAREER_ROLES, INTERNSHIP, PUZZLES, PUZZLE_SALT } from "../data/careers";
+import { INTERNSHIP_TERMS_CONFIRMED } from "../lib/config";
 import { Link, contactTo } from "../lib/router";
 
 async function sha256Hex(text) {
@@ -56,7 +57,7 @@ function PuzzleChallenge() {
           <button type="submit" className="btn btn--solid"><span>Check answer</span><Icon name="arrow" size={16} /></button>
         </form>
         <div className="puzzle__res" role="status" aria-live="polite">
-          {state === "ok" && <p className="puzzle__good"><Icon name="check" size={18} /> Correct. {solvedBoth ? "You have solved both challenges, which gives your application priority consideration." : "Send your answer with a short write-up of how you solved it."}</p>}
+          {state === "ok" && <p className="puzzle__good"><Icon name="check" size={18} /> Correct. {solvedBoth ? "You have solved both challenges. Send your answers with a short write-up of how you solved them." : "Send your answer with a short write-up of how you solved it."}</p>}
           {state === "no" && <p className="puzzle__bad"><Icon name="alert" size={18} /> Not yet. Re-read the artefacts, check your format and try again.</p>}
           {state === "unsupported" && <p className="puzzle__bad"><Icon name="alert" size={18} /> This browser cannot verify answers here. Use a current browser over HTTPS.</p>}
         </div>
@@ -68,7 +69,7 @@ export function CareersPage() {
   return (
     <>
       <PageHero art="soc" crumbs={[["Company", "/company"], ["Careers"]]} eyebrow="Careers" title="Build secure operations with V Pilot."
-        lead="We are hiring investigators, engineers and testers who like to prove things with evidence. Apply for a role, or earn a place on our two-month internship by cracking a hands-on puzzle."
+        lead="We are hiring investigators, engineers and testers who like to prove things with evidence. Apply for a role, or take on the hands-on puzzle for our internship."
         actions={<><AnchorBtn href="#roles">See open roles</AnchorBtn><AnchorBtn href="#internship-challenge" variant="ghost">Try the challenge</AnchorBtn></>} />
 
       <section id="roles" className="band" aria-labelledby="roles-title"><div className="wrap">
@@ -89,13 +90,13 @@ export function CareersPage() {
       </div></section>
 
       <section id="internship" className="band band--cloud" aria-labelledby="intern-title"><div className="wrap">
-        <SectionHead eyebrow="Internship · 2 months" title={INTERNSHIP.title} id="intern-title" lead="A hands-on programme for people who can work through a testing puzzle and a Linux live volatile-memory investigation. Interns who complete it successfully are considered first when we form delivery teams. That is a priority, not a guarantee of employment." />
+        <SectionHead eyebrow={INTERNSHIP_TERMS_CONFIRMED ? `Internship · ${INTERNSHIP.length}` : "Internship"} title={INTERNSHIP.title} id="intern-title" lead={`A hands-on programme for people who can work through a testing puzzle and a Linux live volatile-memory investigation.${INTERNSHIP_TERMS_CONFIRMED ? " Eligible participants may receive priority consideration; participation does not guarantee employment." : ""}`} />
         <ul className="tracks">{INTERNSHIP.tracks.map((t, k) => (<li key={t.t} className="track tilt reveal" data-tilt="5" style={{ "--i": k }}><Tile icon={t.icon} /><h3>{t.t}</h3><p>{t.d}</p></li>))}</ul>
-        <ol className="weeks">{INTERNSHIP.weeks.map(([w, t, d], k) => (<li key={w} className="week reveal" style={{ "--i": k }}><span>{w}</span><h3>{t}</h3><p>{d}</p></li>))}</ol>
+        {INTERNSHIP_TERMS_CONFIRMED && <ol className="weeks">{INTERNSHIP.weeks.map(([w, t, d], k) => (<li key={w} className="week reveal" style={{ "--i": k }}><span>{w}</span><h3>{t}</h3><p>{d}</p></li>))}</ol>}
       </div></section>
 
       <section id="internship-challenge" className="band band--navy challenge" aria-labelledby="chal-title"><div className="wrap">
-        <SectionHead eyebrow="Internship challenge" title="Crack the puzzle. Earn the place." id="chal-title" lead="Challenge A suits the Application Security Governance track. Challenge B suits the Cloud Forensics track. Solve both for priority consideration. Each answer is checked in your browser against a hash, so there is nothing to look up. You have to work it out." />
+        <SectionHead eyebrow="Internship challenge" title="Crack the puzzle. Earn the place." id="chal-title" lead="Challenge A suits the Application Security Governance track. Challenge B suits the Cloud Forensics track. Solve both and send your write-up. Each answer is checked in your browser against a hash, so there is nothing to look up. You have to work it out." />
         <PuzzleChallenge />
         <div className="challenge__rules reveal">
           <h3>Ground rules</h3>

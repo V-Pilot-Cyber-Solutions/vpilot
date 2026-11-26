@@ -1,6 +1,6 @@
 /* PAGE: Home (/)
    Styles: styles/home.css
-   Content: data/home.js, data/services.js (HOME_CATEGORIES) */
+   Content: data/home.js (BUY_PATHS, HOME_CATEGORIES, lanes, flow), data/services.js */
 import "../styles/home.css";
 import { Fragment, useRef } from "react";
 import { CtaBand } from "../components/CtaBand";
@@ -34,16 +34,13 @@ export function Hero({ reduced }) {
           <p className="hero__kicker">Your cybersecurity operating partner</p>
           <h1 id="hero-title"><span className="hero__line">We Pilot Your</span><span className="hero__line hero__line--accent">Security Operations.</span></h1>
           <p className="hero__tagline">Delegate the work. Keep control of the decisions.</p>
-                  <p className="hero__sub">V Pilot connects IT support, technical cyber operations, executive governance and recovery through one accountable operating model. Our specialists run the responsibilities you delegate, and show what was resolved, what remains exposed and who needs to act. Your leadership retains material approvals and formal risk acceptance.</p>
+          <p className="hero__sub">We connects IT support, technical cyber operations, executive governance and recovery through one accountable operating model. Our specialists run the responsibilities you delegate, and show what was resolved, what remains exposed and who needs to act. Your leadership retains material approvals and formal risk acceptance.</p>
           <div className="hero__cta"><Btn to={contactTo("Executive briefing")} variant="cyan">Book an Executive Briefing</Btn><Btn to="/#paths" variant="ghost">Find Your Starting Point</Btn></div>
         </div>
         <div className="hero__art">
           <Emblem3D kind="vpilot" size={270} label="V Pilot emblem" />
           <ul className="hero__promise" aria-label="Operational promise">{["Every action owned.", "Every decision governed.", "Every outcome verified."].map((t, i) => (<li key={t} style={{ "--i": i }}><Icon name="check" size={16} />{t}</li>))}</ul>
         </div>
-      </div>
-      <div className="wrap hero__foot">
-        <ul className="values">{VALUES.map((p, i) => (<li key={p.t} style={{ "--i": i }}><span className="values__ico"><Icon name={p.icon} size={26} /></span><span><b>{p.t}</b>{p.d}</span></li>))}</ul>
       </div>
     </section>
   );
@@ -97,7 +94,7 @@ function ResponsibilitySection() {
         <OperatingLanes />
         <CycleLine />
         <FrameworkRail />
-        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist, Co-Managed and Fully Managed engagement <Icon name="arrow" size={16} /></Link></p>
+        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist Engagement, Co-Managed Operations and Fully Managed Operations <Icon name="arrow" size={16} /></Link></p>
       </div>
     </section>
   );
@@ -128,7 +125,7 @@ function AutonomyReadinessHome() {
           </div>
           <Ladder />
         </div>
-        <p className="inline-links reveal"><Link to="/pudica-autonomy#autonomy-readiness">See the full readiness model and planning windows <Icon name="arrow" size={16} /></Link><Link to={contactTo("Autonomy readiness assessment")}>Assess autonomy readiness <Icon name="arrow" size={16} /></Link></p>
+        <p className="inline-links reveal"><Link to="/pudica-autonomy#autonomy-readiness">See the full readiness model <Icon name="arrow" size={16} /></Link><Link to={contactTo("Autonomy readiness assessment")}>Assess autonomy readiness <Icon name="arrow" size={16} /></Link></p>
       </div>
     </section>
   );
@@ -137,7 +134,7 @@ function ServicesOverview() {
   return (
     <section id="services-overview" className="band band--cloud" aria-labelledby="svc-over-title">
       <div className="wrap">
-        <SectionHead eyebrow="Services" title="Three ways to put V Pilot's specialists to work." id="svc-over-title" lead="Delegate ongoing operations, commission executive governance, or bring in specialists for a defined outcome. Each category has its own scope, owners and evidence. Open a service to see how it works and what you receive." />
+        <SectionHead eyebrow="Service catalogue" title="Three service categories. One accountable operator." id="svc-over-title" lead="Choose the work first, then choose who runs it. Delegate recurring operations, commission a defined solution, or take on governance, risk and compliance. Each category has its own scope, owners and evidence. Open a service to see how it works and what you receive." />
         <ul className="svcats">
           {HOME_CATEGORIES.map((c, k) => (
             <li key={c.key} className={`svcat svcat--${c.key} tilt reveal`} data-tilt="4" style={{ "--i": k }}>
@@ -152,7 +149,7 @@ function ServicesOverview() {
             </li>
           ))}
         </ul>
-        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist, Co-Managed and Fully Managed engagement <Icon name="arrow" size={16} /></Link><Link to="/services/managed-iam-operations">Managed Identity &amp; Access Operations (related service) <Icon name="arrow" size={16} /></Link></p>
+        <p className="inline-links reveal"><Link to="/services#how-to-engage">Compare Specialist Engagement, Co-Managed and Fully Managed operations <Icon name="arrow" size={16} /></Link><Link to="/company/profile">Read the company profile <Icon name="arrow" size={16} /></Link></p>
       </div>
     </section>
   );

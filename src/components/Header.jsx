@@ -11,7 +11,7 @@ import { Link, contactTo, offerTo, useRouter } from "../lib/router";
    OFFER TICKER + HEADER
    ========================================================================== */
 function OfferTicker({ reduced }) {
-  if (!OFFER.enabled) return <p className="utility__static">Managed cybersecurity operations &amp; assurance.</p>;
+  if (!OFFER.enabled) return <p className="utility__static"></p>;
   const items = [
     <span key="a"><b>{OFFER.discount}</b> {OFFER.service}</span>,
     <span key="b">{OFFER.urgency}: clear accountability, operational privacy, continuous evidence</span>,
@@ -70,7 +70,7 @@ export function Header({ reduced }) {
     <header ref={headerRef} className={`masthead ${scrolled ? "is-scrolled" : ""}`} onMouseLeave={leave}>
       <div className="progress" aria-hidden="true" />
       <div className="utility"><div className="utility__in"><OfferTicker reduced={reduced} />
-        <div className="utility__links"><Link to="/support">Customer Support</Link><Link to="/contact">Contact</Link><a className="utility__signin" href={PUDICA_SIGNIN} target="_blank" rel="noopener noreferrer"><Emblem kind="pudica" size={14} />PUDICA Sign-in <Icon name="external" size={11} /></a></div></div></div>
+        <div className="utility__links"><Link to="/support">Customer Support</Link><Link to="/contact">Contact</Link><a className="utility__signin" href={PUDICA_SIGNIN} target="_blank" rel="noopener noreferrer">PUDICA Sign-in <Icon name="external" size={11} /></a></div></div></div>
       <div className="primary">
         <Link className="brand" to="/" aria-label="V Pilot Cyber Solutions LLP, home"><BrandLogo reduced={reduced} width="190" height="87" /></Link>
         {wide && (<nav className="menus" aria-label="Primary"><ul>{MENUS.map((m) => (

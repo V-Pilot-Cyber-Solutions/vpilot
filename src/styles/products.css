@@ -1,4 +1,4 @@
-/* Solutions and products overview. */
+/* Solutions overview. */
 .ntfig { position: relative; margin: 0; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-2), 0 0 0 1px rgba(116, 233, 239, 0.4); background: var(--navy); }
 .ntfig img { display: block; width: 100%; aspect-ratio: 4 / 3.3; object-fit: cover; object-position: 62% 50%; }
 .nt__tag { position: absolute; display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; background: rgba(10, 60, 130, 0.62); border: 1px solid rgba(116, 233, 239, 0.6); backdrop-filter: blur(8px); box-shadow: 0 0 20px rgba(40, 160, 255, 0.4); animation: float 6s ease-in-out infinite; }

@@ -1,4 +1,4 @@
-/* Compare Operating Models page. */
+/* Compare Operating Models page and shared table styles. */
 :where(.pick, .profile) {
   position: relative; background: var(--card-bg); border: 1px solid var(--card-edge); border-radius: var(--radius); box-shadow: var(--card-shadow); transition: box-shadow 0.4s var(--ease), border-color 0.4s, transform 0.3s var(--ease);
 }
@@ -78,31 +78,19 @@
   .cmp--5 table { min-width: 960px; }
 }
 @media (max-width: 900px) {
+  .cmp--cap td:nth-child(2) { width: 100%; white-space: normal; }
+}
+@media (max-width: 900px) {
   .cmp--5,
   .cmp--cap,
   .cmp--price { overflow: visible; }
   .cmp--5 table { min-width: 0; }
-  .cmp--5 thead,
-  .cmp--cap thead,
-  .cmp--price thead { display: none; }
-  .cmp--5 table,
-  .cmp--5 tbody,
-  .cmp--5 tr,
-  .cmp--5 th,
+  .cmp--5 tbody th,
   .cmp--5 td,
-  .cmp--cap table,
-  .cmp--cap tbody,
-  .cmp--cap tr,
-  .cmp--cap th,
+  .cmp--cap tbody th,
   .cmp--cap td,
-  .cmp--price table,
-  .cmp--price tbody,
-  .cmp--price tr,
-  .cmp--price th,
-  .cmp--price td { display: block; width: 100% !important; white-space: normal !important; }
-  .cmp tbody th { padding: 14px 16px 6px; background: #f7fbfe; border-bottom: 0; }
-  .cmp td { padding: 6px 16px 14px; border-bottom: 1px solid var(--line); }
-  .cmp td::before { content: attr(data-label); display: block; margin-bottom: 2px; font: 700 10.5px var(--font-display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+  .cmp--price tbody th,
+  .cmp--price td { width: 100% !important; white-space: normal !important; }
   .cmp--5 td:nth-child(5) { background: rgba(0, 126, 118, 0.06); }
 }
 @media print {
@@ -111,4 +99,13 @@
   .cmp--5,
   .cmp--cap,
   .cmp--price { overflow: visible; }
+}
+.cmp--spec tbody th { width: 26%; }
+.cmp--spec td { width: auto; }
+.cmp--spec td:nth-child(2) { background: transparent; }
+#delivery-options { scroll-margin-top: 40px; }
+@media (max-width: 900px) {
+  .cmp--spec tbody th,
+  .cmp--spec td { width: 100% !important; }
+  .cmp--spec thead { display: none; }
 }

@@ -15,7 +15,7 @@ export function SolutionDetail({ item }) {
   const related = (item.related || []).map(bySlug).filter(Boolean);
   return (
     <>
-      <PageHero art="mountains" crumbs={[["Product", "/products"], ["Solutions", "/products#solutions"], [item.name]]} eyebrow="Solution" title={item.name} lead={item.lead} actions={<><Btn to={contactTo(item.interest)} variant="cyan">Discuss this solution</Btn><Btn to="/services#how-to-engage" variant="ghost">Compare engagement options</Btn></>}>
+      <PageHero art="mountains" crumbs={[["Solutions", "/products#solutions"], [item.name]]} eyebrow="Solution" title={item.name} lead={item.lead} actions={<><Btn to={contactTo(item.interest)} variant="cyan">Discuss this solution</Btn><Btn to="/services#how-to-engage" variant="ghost">Compare engagement options</Btn></>}>
         <div className="glass">{item.framework ? <FrameworkMark kind={item.framework} size={230} labels /> : <Tile icon={item.icon} dark size={30} />}<p className="glass__k">At a glance</p><p className="glass__v">{item.short}</p></div>
       </PageHero>
       <section className="band" aria-labelledby="d-body"><div className="wrap split"><header className="section-head reveal"><Eyebrow>Overview</Eyebrow><h2 id="d-body">{item.short}</h2></header><div className="prose__body reveal" style={{ "--i": 1 }}>{item.body.map((p) => (<p key={p}>{p}</p>))}</div></div></section>

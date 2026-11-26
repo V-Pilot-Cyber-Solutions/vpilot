@@ -1,4 +1,4 @@
-/* Frameworks page (ProdSecOps and ProdSecApps). */
+/* Frameworks page. */
 .mgrid__tile--ops .fmark__word,
 .mgrid__tile--apps .fmark__word { fill: #dbeaf6; }
 .mgrid__tile--ops .fmark__name,
@@ -35,3 +35,4 @@
 @media print {
   .fw__card { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
 }
+#framework-detail { scroll-margin-top: 40px; }

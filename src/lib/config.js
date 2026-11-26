@@ -1,4 +1,4 @@
-import { ALIASES } from "../data/services";
+import { ALIASES, GRC } from "../data/services";
 import { SOLUTIONS } from "../data/solutions";
 import { Hero, Home } from "../pages/HomePage";
 
@@ -9,9 +9,10 @@ import { Hero, Home } from "../pages/HomePage";
    Canonical placement
      Home      explains how V Pilot operates, how existing tools feed the work, and where to start
      Solutions /products overview; Autonomy: PUDICA Autonomy (flagship platform) and Compare Operating Models
+     Services  three categories: Managed Security Operations, Specialist Solutions, GRC as a Service
      Services  owns the catalogue and engagement options
      Resources frameworks, sample decision record, executive summary
-     NativeTrust Endpoint is a Managed Security Operations service (/services/nativetrust-endpoint).
+     NativeTrust Endpoint is a Specialist Solution (/services/nativetrust-endpoint).
    Retired: "IT & Infrastructure Security Operations" (old route shows a scope chooser; see ALIASES).
    Service detail pages share one structure: Hero > When this fits > What V Pilot delivers >
    How we work with your team > What it looks like in practice > Evidence and next step.
@@ -41,11 +42,13 @@ export const SOCIAL = [
   ["GitHub", "https://github.com/V-Pilot-Cyber-Solutions"],
 ];
 /* Campaign (ticker + /offers/dpo-onboarding). enabled:false hides it. Confirm approval, dates and terms before launch. */
-export const OFFER = {
-  enabled: true, badge: "Campaign", discount: "30% off", service: "Privacy Operations & DPO Support onboarding",
-  urgency: "Get privacy operations ready for DPDPA", cta: "Claim the offer",
-  interest: "Privacy Operations & DPO Support: 30% onboarding offer",
-};
+/* HOLD (wording standard item 10): the privacy onboarding campaign is disabled. Reinstate it only after eligibility, discount basis, scope, validity and terms are approved:
+   set enabled: true and fill badge, discount, service, urgency, cta and interest. While disabled, the header shows a static link to the privacy service instead of a ticker. */
+export const OFFER = { enabled: false, badge: "", discount: "", service: "", urgency: "", cta: "", interest: "" };
+/* HOLD (items 12, 13, 14): no consent manager is installed. When one is, set CONSENT_MANAGER = true and connect the "vpilot:open-cookie-settings" event. */
+export const CONSENT_MANAGER = false;
+/* HOLD (item 15): publish internship duration, week plan and priority-consideration wording only after HR confirms duration, stipend, IP, confidentiality and applicant-data handling. */
+export const INTERNSHIP_TERMS_CONFIRMED = false;
 const TRIAL_LABEL = "Free Trial";
 const TRIAL_INTEREST = "Free trial";
 export const HEADER_CTA = { label: "Book an Executive Briefing", interest: "Executive briefing" }; // switch to { label: TRIAL_LABEL, interest: TRIAL_INTEREST } only when the trial, eligibility and fulfilment are approved
@@ -70,8 +73,13 @@ export const REDIRECTS = {
   "/products/5pilot-cloud#managed-security-ops": "/products/compare#compare-table",
   "/products/5pilot-cloud#audit-readiness-evidence": "/products/compare#compare-table",
   "/services/ciso-as-a-service": "/services/grc-as-a-service",
+  "/services/managed-iam-operations": "/services/managed-identity-it-operations",
+  "/services/vulnerability-configuration-management": "/services/vulnerability-compliance-remediation-management",
+  "/services/digital-forensics-investigation": "/services/digital-forensics-training-investigations",
+  "/services#executive-governance": "/services#grc-as-a-service",
+  "/services#specialist-engagements": "/services#specialist-solutions",
   "/pudica-autonomy/architecture": "/pudica-autonomy#validation-architecture",
   "/pudica-autonomy/readiness": "/pudica-autonomy#autonomy-readiness",
   "/pudica-autonomy#workstreams": "/pudica-autonomy#capabilities",
-  "/offers/dpo-onboarding": "/contact?interest=Privacy%20Operations%20%26%20DPO%20Support%3A%2030%25%20onboarding%20offer",
+  "/offers/dpo-onboarding": "/services/privacy-operations-dpo-support",
 };

@@ -9,11 +9,11 @@ import { Link, contactTo } from "../lib/router";
 
 export function ScopeChooser({ kind = "nativetrust" }) {
   const common = [
-    ["laptop", "NativeTrust Endpoint", "Managed endpoint security: agreed Zero Trust controls across supported desktops, laptops, browsers and approved applications.", "/services/nativetrust-endpoint", "Explore NativeTrust Endpoint"],
-    ["gear", "Managed Security Operations", "Delegate agreed identity, exposure, detection, response and recovery work, including named production systems where agreed.", kind === "it-infra" ? "/managed-security-operations#production-systems-support" : "/managed-security-operations", kind === "it-infra" ? "See the production systems scope note" : "Explore Managed Security Operations"],
+    ["laptop", "NativeTrust Endpoint", "Managed endpoint security: agreed security controls for supported devices, browsers and work data.", "/services/nativetrust-endpoint", "Explore NativeTrust Endpoint"],
+    ["gear", "Managed Security Operations", "Delegate agreed exposure, detection, response and recovery work, including named production systems where agreed.", kind === "it-infra" ? "/managed-security-operations#production-systems-support" : "/managed-security-operations", kind === "it-infra" ? "See the production systems scope note" : "Explore Managed Security Operations"],
   ];
   const third = kind === "it-infra"
-    ? ["key", "Managed Identity & Access Operations", "Identity lifecycle, access reviews and privileged-access administration with their own approvals and evidence.", "/services/managed-iam-operations", "Explore the service"]
+    ? ["key", "Managed Identity & IT Operations", "Identity lifecycle, Intune administration and named IT requests with their own approvals and evidence.", "/services/managed-identity-it-operations", "Explore the service"]
     : ["mail", "Contact V Pilot", "Tell us what you were looking for and we will point you to the right scope.", contactTo("Executive briefing"), "Contact V Pilot"];
   const opts = [...common, third];
   return (

@@ -69,7 +69,7 @@ export function AskVPilot() {
                   {f.a === "__SERVICES__" ? (
                     <><p>Choose a scope:</p><ul className="askp__list">
                       {Object.entries(GROUPS).map(([key, label]) => (<li key={key}><b>{label}</b><span>{CARD_ITEMS.filter((s) => s.group === key).map((s) => s.name).join(" · ")}</span></li>))}
-                      <li><b>NativeTrust Endpoint</b><span>Managed endpoint security, listed under Managed Security Operations</span></li><li><b>PUDICA Autonomy</b><span>The flagship platform: cloud and hybrid operating models</span></li>
+                      <li><b>PUDICA Autonomy</b><span>The flagship platform: cloud and hybrid operating models</span></li>
                     </ul></>
                   ) : (<p>{f.a}</p>)}
                   <button type="button" className="askp__link" onClick={() => go(f.to)}>{f.label} <Icon name="arrow" size={13} /></button>

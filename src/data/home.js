@@ -1,19 +1,19 @@
-import { MSO_SLUGS } from "./services";
+import { MSO_SLUGS, SPECIALIST_SLUGS } from "./services";
 import { Link } from "../lib/router";
 import { Home } from "../pages/HomePage";
 
 export const BUY_PATHS = [
   { key: "cloud", icon: "cloud", tag: "Automate cloud security operations", title: "PUDICA Autonomy for Cloud Operations",
-    copy: "Start with PUDICA Autonomy for Cloud Operations. Connect a supported environment, validate one workflow and scale it across eligible workloads. Your team runs the operation, with optional V Pilot Virtual Support.",
-    buys: "A platform subscription for supported cloud workflows. The customer runs the operation, with optional V Pilot Virtual Support.",
-    chips: ["Supported cloud environments", "Self-Managed Operations", "Optional Virtual Support"], cta: ["Explore Cloud Operations", "/pudica-autonomy#cloud-operations"] },
+    copy: "Start with PUDICA Autonomy for Cloud Operations. Connect a supported environment, validate one workflow and scale it across eligible workloads. Your team operates the workflows, with optional V Pilot Remote Support.",
+    buys: "A PUDICA subscription for supported cloud workflows. Your team operates the workflows and executes production changes. V Pilot Remote Support is optional and provides remote guidance only.",
+    chips: ["Supported cloud environments", "Customer-Operated", "Optional V Pilot Remote Support"], cta: ["Explore Cloud Operations", "/pudica-autonomy#cloud-operations"] },
   { key: "hybrid", icon: "nodes", tag: "Run security across cloud and on-premises", title: "PUDICA Autonomy for Hybrid Operations",
-    copy: "Choose PUDICA Autonomy for Hybrid Operations with a scoped V Pilot managed or co-managed service. We map dependencies, operate the agreed work and expand automation as individual workflows qualify.",
-    buys: "A platform subscription plus a scoped V Pilot managed or co-managed service, expanding automation in stages.",
-    chips: ["Cloud and on-premises", "Managed or co-managed", "Staged automation"], cta: ["Explore Hybrid Operations", "/pudica-autonomy#hybrid-operations"] },
+    copy: "Choose PUDICA Autonomy for Hybrid Operations, delivered as Co-Managed or Fully Managed Operations. We map dependencies, perform the activities assigned to V Pilot and expand automation as individual workflows qualify.",
+    buys: "A PUDICA subscription plus V Pilot Co-Managed or Fully Managed Operations for the agreed scope, expanding automation in stages.",
+    chips: ["Cloud and on-premises", "Co-Managed or Fully Managed", "Staged automation"], cta: ["Explore Hybrid Operations", "/pudica-autonomy#hybrid-operations"] },
   { key: "endpoint", icon: "laptop", tag: "Protect workforce endpoints and customer data", title: "NativeTrust Endpoint",
     copy: "Choose NativeTrust Endpoint for managed security across supported desktops, laptops, browsers and approved applications. Start with a representative user group and scale the controls that work.",
-    buys: "A managed endpoint security service on supported devices, browsers and applications. Available on its own or alongside PUDICA.",
+    buys: "A managed endpoint security service for supported devices, browsers and work data. Available on its own or alongside PUDICA.",
     chips: ["Device hardening", "Device-based access", "Browser and data controls"], cta: ["Explore NativeTrust Endpoint", "/services/nativetrust-endpoint"] },
 ];
 export const HOME_TOOL_STEPS = [
@@ -23,25 +23,25 @@ export const HOME_TOOL_STEPS = [
   { icon: "gate", t: "Approve and act", d: "The designated approver decides. A passing test is not permission.", gate: true },
   { icon: "check", t: "Verify or escalate", d: "Production checks confirm closure. Anything unresolved stays open with an owner." },
 ];
+export const HOME_CATEGORIES = [
+  { key: "mso", icon: "gear", eyebrow: "Managed Security Operations", title: "Delegate the work. Keep control of the decisions.",
+    copy: "V Pilot treats exposure, monitors critical services, coordinates response and tests recovery. Commission one service or combine several under a single operating agreement, with named coverage, change authority and evidence of completion.",
+    for: "For teams that need an accountable operator for recurring security work.", receive: "Verified remediation, a detection coverage matrix, exercised playbooks and restore results.",
+    slugs: MSO_SLUGS, cta: ["Explore Managed Security Operations", "/managed-security-operations"] },
+  { key: "specialist", icon: "clipboard", eyebrow: "Specialist Solutions", title: "Commission a defined outcome, or an ongoing technical responsibility.",
+    copy: "Protect the workforce with NativeTrust Endpoint, run identity and IT operations, govern application risk, migrate securely or investigate with evidence. Each solution names its supported systems, acceptance criteria, operators and handoffs.",
+    for: "For a defined change, or a technical responsibility with clear acceptance criteria.", receive: "Policy coverage, access records, release decisions, cutover records or findings with their limitations.",
+    slugs: SPECIALIST_SLUGS, cta: ["Explore Specialist Solutions", "/services#specialist-solutions"] },
+  { key: "govern", emblem: "vpilot", eyebrow: "GRC as a Service", title: "Give leadership the evidence to fund, correct or accept.",
+    copy: "Commission readiness, enterprise risk or privacy operations independently, or combine them under an agreed review cadence. V Pilot coordinates the work; your owners retain risk and statutory decisions, and independent assurance stays independent.",
+    for: "For leaders who need decisions backed by current evidence, not activity reports.", receive: "A readiness roadmap, a supplier assurance record or a privacy action register.",
+    slugs: ["certification-readiness", "enterprise-risk-vendor-assurance", "privacy-operations-dpo-support"], cta: ["Discuss Your GRC Scope", "/services/grc-as-a-service"] },
+];
 export const VALUES = [
   { icon: "nodes", t: "Operational ownership", d: "Know who operates the work and where it escalates." },
   { icon: "shieldcheck", t: "Risk-governed action", d: "Prioritise changes by exposure, business impact and service dependencies." },
   { icon: "restore", t: "Tested resilience", d: "See which changes and restoration procedures have been tested." },
   { icon: "clipboard", t: "Continuous assurance", d: "Capture decisions, exceptions and results as the work happens." },
-];
-export const HOME_CATEGORIES = [
-  { key: "mso", icon: "gear", eyebrow: "Managed Security Operations", title: "Delegate the work. Keep control of the decisions.",
-    copy: "V Pilot protects endpoints, treats exposure, monitors critical services, coordinates response, tests recovery and helps govern application risk. Commission one service or combine several under a single operating agreement, with named coverage and change authority.",
-    for: "For teams that need an accountable operator for day-to-day security work.", receive: "Policy coverage, retests, coverage matrices and restore results.",
-    slugs: MSO_SLUGS, cta: ["Explore Managed Security Operations", "/managed-security-operations"] },
-  { key: "govern", emblem: "vpilot", eyebrow: "Executive Governance & Assurance", title: "GRC as a Service",
-    copy: "Give leadership a clear basis for deciding what to fund, treat or accept. GRC as a Service brings security priorities, control ownership and material risks into one executive roadmap. Add readiness, enterprise risk or privacy support, or commission them separately. Independent audit and certification decisions stay independent.",
-    for: "For executives who need decisions backed by evidence, not activity reports.", receive: "An executive brief, a security roadmap and a decision log.",
-    slugs: ["grc-as-a-service", "certification-readiness", "enterprise-risk-vendor-assurance", "privacy-operations-dpo-support"], cta: ["Discuss Your Governance Scope", "/services#executive-governance"] },
-  { key: "specialist", icon: "clipboard", eyebrow: "Specialist Engagements", title: "Bring in the right expertise for a defined outcome.",
-    copy: "Secure Cloud Migration plans a controlled cutover, rollback and operating handover. Digital Forensics & Investigation establishes what authorised evidence supports and what remains uncertain. Each engagement starts with a defined question and ends with agreed evidence and handover.",
-    for: "For a defined change or investigation with a clear start and finish.", receive: "A cutover and acceptance record, or an evidence register, timeline and findings.",
-    slugs: ["secure-cloud-migration", "digital-forensics-investigation"], cta: ["Discuss a Specialist Engagement", "/services#specialist-engagements"] },
 ];
 /* ==========================================================================
    Home: operating gap, responsibility, why

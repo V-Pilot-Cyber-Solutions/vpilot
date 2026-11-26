@@ -25,6 +25,7 @@ import { LegalIndex, LegalPage } from "./pages/LegalPages";
 import { MsoPage } from "./pages/MsoPage";
 import { NotFound } from "./pages/NotFound";
 import { ProductsPage } from "./pages/ProductsPage";
+import { ProfilePage } from "./pages/ProfilePage";
 import { PudicaPage } from "./pages/PudicaPage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { SampleDecisionPage } from "./pages/SampleDecisionPage";
@@ -47,10 +48,10 @@ export function resolve(path, reduced) {
   if (LEGAL_DOCS[a] && !b) return T(LEGAL_DOCS[a].title, <LegalPage key={a} doc={LEGAL_DOCS[a]} />);
   switch (a) {
     case "products":
-      if (!b) return T("Solutions", <ProductsPage />, "Cloud security automation, hybrid managed security operations, workforce endpoint protection and more. Start with the problem you need to solve.", "Solutions: Security Automation and Managed Operations | V Pilot");
-      if (b === "compare") return T("Compare Operating Models", <ComparePage />, "Compare cloud self-managed operations, cloud virtual support, hybrid managed or co-managed operations and NativeTrust Endpoint by who runs the work and what evidence you receive.", "Compare Operating Models | PUDICA Autonomy and NativeTrust Endpoint | V Pilot");
+      if (!b) return T("Solutions", <ProductsPage />, "Cloud security automation, hybrid security operations, workforce endpoint protection and more. Start with the problem you need to solve.", "Solutions: Security Automation and Managed Operations | V Pilot");
+      if (b === "compare") return T("Compare Operating Models", <ComparePage />, "Compare Customer-Operated, Customer-Operated with V Pilot Remote Support, Hybrid Co-Managed or Fully Managed Operations and NativeTrust Endpoint by who runs the work and what evidence you receive.", "Compare Operating Models | PUDICA Autonomy and NativeTrust Endpoint | V Pilot");
       break;
-    case "managed-security-operations": return T("Managed Security Operations", <MsoPage />, "Delegate endpoint protection, exposure management, detection, incident response, recovery assurance and application security governance to V Pilot, within agreed scope and approvals.");
+    case "managed-security-operations": return T("Managed Security Operations", <MsoPage />, "Delegate vulnerability and compliance remediation, detection, incident response and recovery assurance to V Pilot, within agreed scope and approvals.");
     case "solutions": {
       if (b === "nativetrust") return T("Choose a scope", <ScopeChooser kind="nativetrust" />, undefined, undefined, { noindex: true });
       const s = SOLUTIONS.find((x) => x.slug === b);
@@ -58,7 +59,7 @@ export function resolve(path, reduced) {
       break;
     }
     case "services": {
-      if (!b) return T("Services", <ServicesPage />, "Choose managed security operations, GRC as a Service or specialist engagements. Agree who operates the work, who approves changes and what evidence you receive.", "Cybersecurity Services | V Pilot");
+      if (!b) return T("Services", <ServicesPage />, "Choose Managed Security Operations, Specialist Solutions or GRC as a Service. Agree who operates the work, who approves changes and what evidence you receive.", "Cybersecurity Services | V Pilot");
       const slug = ALIASES[b] || b;
       if (slug === "__chooser") return T("Choose a scope", <ScopeChooser kind="it-infra" />, undefined, undefined, { noindex: true });
       const s = bySlug(slug);
@@ -76,7 +77,8 @@ export function resolve(path, reduced) {
       break;
     case "company":
       if (!b) return T("Company", <CompanyPage />);
-      if (b === "careers") return T("Careers", <CareersPage />, "Open roles for Cloud Forensics Analyst, DevSecOps Engineer and Pentest Engineer, plus a two-month internship in cloud forensics and application security governance.", "Careers | Cloud Forensics, DevSecOps and Pentest Roles at V Pilot");
+      if (b === "profile") return T("Company profile 2026", <ProfilePage />, "V Pilot company profile 2026: purpose, operating model, service portfolio, partner ecosystem, measures and standards alignment for Managed Security Operations, Specialist Solutions and GRC as a Service.", "Company Profile 2026 | Integrated Cyber Operations, Governance & Assurance | V Pilot");
+      if (b === "careers") return T("Careers", <CareersPage />, "Open roles for Cloud Forensics Analyst, DevSecOps Engineer and Pentest Engineer, plus an internship with a hands-on challenge in cloud forensics and application security governance.", "Careers | Cloud Forensics, DevSecOps and Pentest Roles at V Pilot");
       break;
     case "contact": return T("Contact", <ContactPage />);
     case "support": return T("Customer support", <SupportPage />);

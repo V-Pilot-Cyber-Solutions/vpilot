@@ -20,9 +20,10 @@ export const PROOF = [
   { n: "03", t: "Restoration exercise and corrective-action record", d: "Recovery is exercised, and what remains unproven stays visible." },
 ];
 export const BRAND_MAP = [
-  { emblem: "vpilot", t: "V Pilot Cyber Solutions LLP", d: "The contracting partner. The V Pilot virtual operations team runs the agreed scope, coordinates escalations and reports verified outcomes." },
-  { icon: "laptop", t: "NativeTrust Endpoint", d: "V Pilot's managed endpoint security service: agreed Zero Trust controls on supported desktops, laptops, browsers and approved applications. Available on its own or alongside PUDICA." },
-  { mark: "ops", t: "ProdSecOps and ProdSecApps", d: "The operating frameworks for infrastructure and application security. They guide delivery; they are not separate software products." },
-  { emblem: "pudica", t: "PUDICA Autonomy", d: "The flagship AI-driven, risk-based security operations platform. It connects evidence, isolated validation, customer-approved authority, execution and verification." },
-  { icon: "clipboard", t: "Executive Governance & Assurance", d: "GRC as a Service: executive security leadership, with readiness, enterprise risk and privacy available by scope. Not a mandatory approval layer." },
+  { emblem: "vpilot", t: "V Pilot Cyber Solutions LLP", d: "The operating and contracting partner. Named responsibilities, agreed coverage and evidence of delivery across Managed Security Operations, Specialist Solutions and GRC as a Service." },
+  { emblem: "pudica", t: "PUDICA Autonomy", d: "The flagship security operations automation platform. Risk-based prioritisation, validation, authorised action and production verification for eligible workflows." },
+  { icon: "laptop", t: "NativeTrust Endpoint", d: "A Specialist Solution for managed endpoint security: agreed device, access, browser and data controls, with evidence of coverage and exceptions." },
+  { mark: "ops", t: "ProdSecOps", d: "The production security operating framework. Infrastructure security work aligned to service dependencies and recovery requirements." },
+  { mark: "apps", t: "ProdSecApps", d: "The application trust framework. Application security ownership and decisions from acquisition and engineering to release and retirement." },
+  { icon: "clipboard", t: "GRC as a Service", d: "Governance, risk and compliance packages: readiness, enterprise risk and vendor assurance, and privacy operations. Independent assurance stays independent." },
 ];

@@ -1,6 +1,6 @@
 /* PAGE: Privacy, Terms, Cookies, Security Disclosure, Accessibility
    Styles: styles/legal.css
-   Content: data/legal.jsx */
+   Content: data/legal.jsx; lib/config.js (CONSENT_MANAGER) */
 import "../styles/legal.css";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "../components/Icon";

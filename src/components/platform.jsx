@@ -5,7 +5,6 @@ import { Status } from "./atoms";
 import { Tile } from "./brand";
 import { AUTONOMY, LAYERS, RECORD, STAGES, STAGE_DELAYS, SUMMARY_FIELDS, TOOL_SOURCES, TOOL_STEPS, WORKSTREAMS } from "../data/platform";
 import { useSequence } from "../hooks/index";
-import { Link } from "../lib/router";
 
 /* HOME · Work with the tools you already have */
 export function IntakeFlow({ steps = TOOL_STEPS, note }) {
@@ -48,7 +47,7 @@ export function RecordCard() {
     <article className="record reveal" aria-label="Illustrative gateway decision record, still open">
       <header className="record__head"><span>Gateway decision record</span><span className="record__flags"><Status tone="verified">Validated in isolation</Status><Status tone="pending">Awaiting approval</Status><Status tone="open">Production verification due</Status><span className="tag">Illustrative</span></span></header>
       <dl>{RECORD.map((r, i) => (<div key={r.label} className={`record__row record__row--${r.tone}`} style={{ "--i": i }}><dt>{r.label}<Status tone={r.tone}>{r.status}</Status></dt><dd>{r.text}</dd></div>))}</dl>
-      <footer className="record__foot">Open example. The record stays open until production verification is confirmed.</footer>
+      <footer className="record__foot">Illustrative example. Figures show the format of the operating record and do not represent a customer result. The record stays open until production verification is confirmed.</footer>
     </article>
   );
 }
@@ -67,8 +66,14 @@ export function PipelineTabs() {
 }
 export function Layers() { return (<ol className="layers">{LAYERS.map((l, i) => (<li key={l} className="reveal" style={{ "--i": i }}><span>L{i + 1}</span>{l}</li>))}</ol>); }
 export function Ladder() {
-  const [level, setLevel] = useState(3);
-  return (<div className="ladder" role="group" aria-label="Autonomy levels">{AUTONOMY.map((x, i) => (<button key={x.a} type="button" className={`rung ${i <= level ? "is-on" : ""} ${i === level ? "is-sel" : ""}`} style={{ "--i": i }} aria-pressed={i === level} onClick={() => setLevel(i)}><b>{x.a}</b><span>{x.n}</span></button>))}</div>);
+  const [level, setLevel] = useState(4);
+  const cur = AUTONOMY[level];
+  return (
+    <div className="ladderwrap">
+      <div className="ladder" role="group" aria-label="Autonomy levels">{AUTONOMY.map((x, i) => (<button key={x.a} type="button" className={`rung ${i <= level ? "is-on" : ""} ${i === level ? "is-sel" : ""}`} style={{ "--i": i }} aria-pressed={i === level} onClick={() => setLevel(i)}><b>{x.a}</b><span>{x.n}</span></button>))}</div>
+      <p className="ladder__detail" aria-live="polite" key={level}><b>{cur.a} · {cur.n}.</b> {cur.d}</p>
+    </div>
+  );
 }
 export function SummaryCard() {
   return (<aside className="summary reveal" aria-label="Sample executive assurance summary"><header><span>Executive assurance summary</span><span className="tag">Illustrative sample</span></header><dl>{SUMMARY_FIELDS.map(([k, v]) => (<div key={k}><dt>{k}</dt><dd>{v}</dd></div>))}</dl></aside>);
@@ -83,7 +88,6 @@ export function WorkstreamExplorer() {
         <h3>{w.name}</h3><p className="wsx__promise">{w.promise}</p>
         <div className="wsx__cols"><div><p className="wsx__k">What the buyer can evaluate</p><p>{w.buyer}</p></div><div><p className="wsx__k">Evidence the customer receives</p><p>{w.evidence}</p></div></div>
         <div className="wsx__uses"><p className="wsx__k">Two illustrative uses</p><ul>{w.uses.map((u) => (<li key={u}>{u}</li>))}</ul></div>
-        {w.link && <p className="inline-links"><Link to={w.link[1]}>{w.link[0]} <Icon name="arrow" size={15} /></Link></p>}
       </div>
     </div>
   );

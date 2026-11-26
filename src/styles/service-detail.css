@@ -1,4 +1,4 @@
-/* Service detail pages: when this fits, three columns, scenarios, sample records, evidence and next step. */
+/* Service detail pages. */
 .glass--ev { justify-items: start; }
 .fits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .fit { display: flex; gap: 16px; align-items: flex-start; padding: 24px 22px; font-size: 16px; }
@@ -140,3 +140,5 @@
   .srec__foot { color: #000 !important; background: #f6f6f6 !important; }
   .fit__n { background: #fff !important; color: #000 !important; border-color: #000 !important; }
 }
+.run { margin-top: 56px; }
+.run .section-head { margin-bottom: 24px; }

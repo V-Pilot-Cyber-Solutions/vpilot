@@ -58,3 +58,5 @@
   .scopebox,
   .relman { break-inside: avoid; box-shadow: none !important; background: #fff !important; border: 1px solid #999 !important; }
 }
+.gov2:has(> :only-child) { grid-template-columns: 1fr; }
+#proof-of-concept { scroll-margin-top: 40px; }

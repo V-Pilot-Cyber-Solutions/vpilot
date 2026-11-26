@@ -1,6 +1,6 @@
 /* PAGE: Company (/company)
    Styles: styles/company.css
-   Content: data/company.js */
+   Content: data/company.js (BRAND_MAP) */
 import "../styles/company.css";
 import { CtaBand } from "../components/CtaBand";
 import { Icon } from "../components/Icon";
@@ -25,7 +25,7 @@ function WhySection({ id = "why" }) {
     </section>
   );
 }
-function BrandMap({ id = "structure" }) {
+export function BrandMap({ id = "structure" }) {
   return (<ul className="bmap" id={id}>{BRAND_MAP.map((b, k) => (<li key={b.t} className="bmap__row tilt reveal" data-tilt="5" style={{ "--i": k % 3 }}><Tile icon={b.icon} emblem={b.emblem} mark={b.mark} sm /><h3>{b.t}</h3><p>{b.d}</p></li>))}</ul>);
 }
 /* ==========================================================================
@@ -35,13 +35,14 @@ function ProofRow() { return (<ul className="proof">{PROOF.map((p, i) => (<li ke
 export function CompanyPage() {
   return (
     <>
-      <PageHero art="soc" crumbs={[["Company"]]} eyebrow="Integrated Cyber Operations, Governance & Assurance" title="Your accountable cyber operating partner." lead="V Pilot connects IT support, technical cyber operations, executive governance and recovery through one accountable operating model. V Pilot operates the work; PUDICA connects the evidence; the customer retains decision rights." actions={<><Btn to={contactTo("Executive briefing")} variant="cyan">Book an Executive Briefing</Btn><Btn to="/#operating-model" variant="ghost">See How We Operate</Btn></>}>
+      <PageHero art="soc" crumbs={[["Company"]]} eyebrow="Integrated Cyber Operations, Governance & Assurance" title="Your accountable cyber operating partner." lead="V Pilot protects critical services, delivers security-sensitive changes and gives leadership a clear view of remaining risk. V Pilot operates the agreed work; PUDICA connects the evidence; customer leaders retain material approvals and formal risk acceptance." actions={<><Btn to={contactTo("Executive briefing")} variant="cyan">Book an Executive Briefing</Btn><Btn to="/company/profile" variant="ghost">Read the Company Profile</Btn></>}>
         <div className="glass glass--tag"><Emblem3D kind="vpilot" size={170} label="V Pilot emblem" /><ul className="tagstack"><li>People</li><li>Process</li><li>Technology</li><li className="hi">Higher resilience</li></ul></div>
       </PageHero>
       <WhySection id="why" />
       <section className="band band--cloud" aria-labelledby="co-struct"><div className="wrap"><SectionHead eyebrow="How the company fits together" title="V Pilot operates. PUDICA automates. NativeTrust Endpoint protects the desktop." id="co-struct" lead="Customer leadership retains authority." /><BrandMap id="co-structure" />
-        <div className="principle reveal"><div><p className="principle__k">Supporting principle</p><h3>Reduce complexity without weakening control.</h3><p>V Pilot keeps the systems the business needs rather than cutting infrastructure indiscriminately.</p></div><p className="principle__mvp">Minimum Viable Infrastructure.<br />Maximum Viable Protection.</p></div></div></section>
-      <section className="band" aria-labelledby="co-proof"><div className="wrap split"><SectionHead eyebrow="What you can expect" title="Know what is controlled, what changed and what can recover." id="co-proof" lead="Tools generate findings. V Pilot connects each material finding to an owner, an authorised decision and a verified result." /><ProofRow /></div></section>
+        <div className="principle reveal"><div><p className="principle__k">Supporting principle</p><h3>Reduce complexity without weakening control.</h3><p>V Pilot keeps the systems the business needs rather than cutting infrastructure indiscriminately.</p></div><p className="principle__mvp">Minimum Viable Infrastructure.<br />Maximum Viable Protection.</p></div>
+        <p className="inline-links reveal"><Link to="/company/profile">See purpose, operating model, partner ecosystem and standards in the company profile <Icon name="arrow" size={16} /></Link></p></div></section>
+      <section className="band" aria-labelledby="co-proof"><div className="wrap split"><SectionHead eyebrow="What you can expect" title="Know what is controlled, what changed and what can recover." id="co-proof" lead="We report verified results, open exceptions and decisions due. Tools generate findings. V Pilot connects each material finding to an owner, an authorised decision and a verified result." /><ProofRow /></div></section>
       <CtaBand />
     </>
   );

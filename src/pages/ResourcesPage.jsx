@@ -18,7 +18,7 @@ export function ResourcesPage() {
     ["eye", "Autonomy readiness", "How autonomy is earned through operational evidence.", "/pudica-autonomy#autonomy-readiness"],
     ["users", "How we operate", "Who operates, who decides and who validates.", "/#operating-model"],
     ["gear", "Engagement options", "Specialist, co-managed and fully managed engagement.", "/services#how-to-engage"],
-    ["cloud", "Compare Operating Models", "Cloud, hybrid and endpoint: who runs the work, side by side.", COMPARE_TO],
+    ["cloud", "Compare Operating Models", "Customer-Operated, Remote Support, Hybrid and endpoint: who runs the work, side by side.", COMPARE_TO],
   ];
   return (
     <>
